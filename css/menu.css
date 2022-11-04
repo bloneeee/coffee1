@@ -1,0 +1,239 @@
+body{
+    background-color: #000;
+}
+
+/* Start Menu Section */
+
+#menu-section{
+    height: 85vh;
+}
+
+#menu-section .second-con,
+#menu-section .third-con{
+    display: flex;
+}
+
+#menu-section .second-con{
+    height: 85%;
+}
+
+#menu-section .second-con .card-overflow{
+    font-family: var(--ff-read);
+    width: 100%;
+    overflow: hidden;
+}
+
+#menu-section .second-con .card-move{
+    height: 100%;
+    position: relative;
+    transition: transform 0.15s ease-in-out;
+}
+
+#menu-section .second-con .card-con{
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-gap: 1rem;
+    place-items: center;
+}
+
+#menu-section .second-con .card{
+    width: 100%;
+    background-color: rgb(25,25,25);
+    color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#menu-section .second-con .card img{
+    width: 100%;
+    height: 180px;
+    border-radius: inherit;
+}
+
+#menu-section .second-con .card-body{
+    height: 40%;
+    padding: 0.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu-section .second-con .card-title{
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#menu-section .second-con .card-price{
+    font-size: 20px;
+    color: var(--c-y);
+    margin: 0.5rem 0;
+}
+
+#menu-section .second-con .card-btn{
+    background-color: #111;
+    color: #fff;
+
+    padding: 10px 15px;
+    border-radius: 5px;
+
+    font-size: 15px;
+    text-transform: capitalize;
+
+    display: flex;
+    align-items: center;
+}
+
+#menu-section .second-con .card-btn .text{
+    margin-right: 5px;
+}
+
+#menu-section .second-con .card-btn:not(.disabled):active{
+    transform: scale(0.95);
+}
+
+#menu-section .second-con .card-btn.disabled{
+    opacity: 0.5;
+}
+
+#menu-section .third-con{
+    height: 15%;
+    color: #fff;
+    padding: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu-section .third-con > div{
+    margin: 10px 0;
+}
+
+#menu-section .third-con .num-btn-con{
+    width: 140px;
+    margin: 10px;
+
+    display: flex;
+    grid-gap: 10px;
+
+    overflow-x: auto;
+    scroll-snap-type: x;
+    scroll-behavior: smooth;
+    scroll-width: none;
+
+    cursor: grab;
+}
+
+#menu-section .third-con .num-btn-con.grabbing{
+    cursor: grabbing;
+}
+
+#menu-section .third-con .num-btn-con::-webkit-scrollbar{
+    display: none;
+}
+
+#menu-section .third-con .num-btn{
+    min-width: 40px;
+    line-height: 34px;
+    border: 3px solid rgb(25,25,25);
+    scroll-snap-align: start;
+}
+
+#menu-section .num-btn.clicked-active{
+    color: var(--c-g);
+    border-color: var(--c-g);
+}
+
+@media(max-width: 992px){
+    #menu-section .second-con .card-con{
+        grid-template-columns: repeat(4,1fr);
+    }
+}
+
+@media(max-width: 768px){
+    #menu-section .second-con .card-con{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media(max-width: 576px){
+    #menu-section .second-con .card-con{
+        grid-template-columns: 1fr;
+    }
+}
+
+/* End Menu Section */
+
+/* Start Basket Shopping Section */
+
+#basket-shopping-card-section .card-con{
+    height: 75vh;
+    position: relative;
+}
+
+#basket-shopping-card-section .card-header img{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+#basket-shopping-card-section .card-body{
+    display: flex;
+    align-items: center;
+}
+
+#basket-shopping-card-section .card-body{
+    justify-content: space-between;
+}
+
+#basket-shopping-card-section .card-body .price{
+    text-align: center;
+}
+
+#basket-shopping-card-section .qc-control-con{
+    margin: 0 1rem;
+}
+
+#basket-shopping-card-section .final-total-con{
+    width: 100%;
+    height: 15vh;
+    background-color: #333;
+    border-radius: 0.5rem 0.5rem 0 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#basket-shopping-card-section .final-total-con .final-total{
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#basket-shopping-card-section .final-total-con .order-btn{
+    width: 100%;
+    font-size: 18px;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px){
+    #basket-shopping-card-section .card-header img{
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+    }
+}
+
+/* End Basket Shopping Section */
