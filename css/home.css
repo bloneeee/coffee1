@@ -1,10 +1,11 @@
 body{
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Start Header Section */
 
 header{
+    font-family: var(--ff-cursive);
     color: #fff;
     position: relative;
 }
@@ -35,17 +36,18 @@ header .carousel-indicators{
 }
 
 header .carousel-indicators li{
+    /* background-color: red; */
     color: #444;
     font-size: 20px;
     padding: 10px 15px;
+
     cursor: pointer;
     user-select: none;
-    /* background-color: red; */
 }
 
 header .carousel-indicators li.clicked-active{ 
     color: #fff;
-    transition: color 0.15s cubic-bezier(0,0.25,0.5,1) 0.25s;
+    transition: color 0.15s cubic-bezier(0, 0.25, 0.5, 1) 0.25s;
 }
 
 header .carousel-indicators .tube{
@@ -59,7 +61,7 @@ header .carousel-indicators .tube{
     top: 0;
 
     pointer-events: none;
-    transition: left 0.25s cubic-bezier(0,0.25,0.5,1);
+    transition: left 0.25s cubic-bezier(0, 0.25, 0.5, 1);
 }
 
 header .carousel-indicators .tube .tube-light{
@@ -67,8 +69,8 @@ header .carousel-indicators .tube .tube-light{
     height: 40px;
     background: linear-gradient(
         to bottom,
-        rgba(255,255,255,0.5) -50%,
-        rgba(255,255,255,0) 100%
+        rgba(255, 255, 255, 0.5) -50%,
+        rgba(255, 255, 255, 0) 100%
     );
     clip-path: polygon(25% 0%, 75% 0%, 95% 100%, 5% 100%);
 
@@ -81,7 +83,7 @@ header .carousel-indicators .tube .tube-light{
 header .carousel-move{
     height: 100%;
     position: relative;
-    transition: transform 1s cubic-bezier(0,0.25,0.5,1);
+    transition: transform 1s cubic-bezier(0, 0.25, 0.5, 1);
 }
 
 header .carousel-item{
@@ -119,18 +121,36 @@ header .carousel-item-3{
     ), url('../assets/img/banner3.jpg');
 }
 
+header .carousel-item > *{
+    opacity: 0;
+    transition: all 1.5s ease-out;
+}
+
 header .carousel-item h1{
-    font-size: 60px;
+    font-size: 50px;
     letter-spacing: 2px;
     margin-bottom: 20px;
+
+    transform: translateY(-100%);
 }
 
 header .carousel-item p{
     width: 80%;
     font-size: 30px;
+
+    transform: translateY(100%);
+}
+
+#home-carousel.intro-ani .carousel-item > *{
+    opacity: 1;
+    transform: translateY(0%);
 }
 
 @media (max-width: 576px){
+    header .carousel{
+        height: 500px;
+    }
+
     header .carousel-item h1{
         font-size: 30px;
         letter-spacing: 1px;
@@ -153,17 +173,14 @@ header .carousel-item p{
     background-color: #111;
 }
 
-#menu-section .card-con{
-    font-family: var(--ff-read);
-}
-
 #menu-section .card{
     width: 80%;
     background-color: #222;
     margin: 0 auto;
+
     display: grid;
-    grid-template-columns: repeat(2,50%);
-    grid-auto-rows: minmax(200px,250px);
+    grid-template-columns: repeat(2, 50%);
+    grid-auto-rows: minmax(200px, 250px);
 }
 
 #menu-section .card.reverse .img-box{
@@ -175,26 +192,23 @@ header .carousel-item p{
     grid-row: 1;
 }
 
-#menu-section .img-box{
-    height: 100%;
-}
-
 #menu-section .img-box img{
     width: 100%;
     height: 100%;
 }
 
 #menu-section .text-box > *{
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 
 #menu-section .text-box h3{
     color: #444;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 #menu-section .text-box blockquote{
     max-height: 75%;
+    overflow-y: auto;
 }
 
 @media (max-width: 992px){
@@ -239,12 +253,11 @@ header .carousel-item p{
 /* Start Aboutus Section */
 
 #aboutus-section .card-con{
-    font-family: var(--ff-read);
     width: 95%;
     margin: auto;
 
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
 }
 
@@ -280,12 +293,12 @@ header .carousel-item p{
 
 #aboutus-section .card2{
     background-color: #222;
-    padding: 25px 5px 5px;
+    padding: 30px 5px 5px;
     border-radius: 5px;
 }
 
 #aboutus-section .card2 > *{
-    padding: 5px;
+    padding: 5px 10px;
 }
 
 #aboutus-section .card-header{
@@ -306,7 +319,7 @@ header .carousel-item p{
 
 @media (max-width: 992px){
     #aboutus-section .card-con{
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(2, 1fr);
         grid-gap: 2rem;
     }
 
@@ -325,7 +338,6 @@ header .carousel-item p{
         grid-template-columns: 1fr;
     }
 }
-
 
 /* End Aboutus Section */
 
@@ -503,7 +515,6 @@ header .carousel-item p{
 /* Start Feedback Section */
 
 #feedback-section .carousel{
-    font-family: var(--ff-read);
     width: 40%;
     margin: 0 auto;
     position: relative;
@@ -511,11 +522,13 @@ header .carousel-item p{
 
 #feedback-section .carousel-control-indicators-con{
     display: flex;
+
     position: absolute;
     left: 50%;
     top: 0%;
-    transform: translate(-50%, -70%);
     z-index: 10;
+
+    transform: translate(-50%, -70%);
 }
 
 #feedback-section .carousel-control,
@@ -559,8 +572,9 @@ header .carousel-item p{
     position: absolute;
     left: 0;
     z-index: 1;
+    pointer-events: none;
 
-    transition: left 0.25s cubic-bezier(0,0.25,0.5,1);
+    transition: left 0.25s cubic-bezier(0, 0.25, 0.5, 1);
     animation: rotate-ani 10s linear infinite;
 }
 
@@ -607,9 +621,6 @@ header .carousel-item p{
     width: 80%;
     background-color: #222;
 
-    display: flex;
-    flex-direction: column;
-
     position: relative;
     left: 10%;
     z-index: 10;
@@ -621,35 +632,25 @@ header .carousel-item p{
     padding: 20px;
     
     display: none;
-    grid-template-columns: 67% 30%;
-    grid-column-gap: 3%;
-    grid-row-gap: 10px;
-
     position: relative;
 }
 
 #feedback-section .carousel-move .text-box.clicked-active{
-    display: grid;
+    display: block;
     z-index: 1;
     animation: op-ani 0.5s linear;
-}
-
-#feedback-section .carousel-move .text-box div:first-of-type{
-    text-align: end;
 }
 
 #feedback-section .carousel-move .text-box h3{
     color: #444;
     font-size: 30px;
-    margin-bottom: 10px;
+
     text-decoration: underline 2px wavy #444;
     text-underline-offset: 4px;
 }
 
-#feedback-section .carousel-move .text-box div:last-of-type{
-    display: flex;
-    justify-content: center;
-    align-items: end;
+#feedback-section .carousel-move .text-box blockquote{
+    margin: 15px 0 10px;
 }
 
 @media (max-width: 992px){
@@ -690,26 +691,11 @@ header .carousel-item p{
         left: 5%;
     }
 
-    #feedback-section .carousel-move .text-box{  
-        grid-template-columns: 100%;
-    }
-
-    #feedback-section .carousel-move .text-box div:first-of-type{
-        text-align: start;
-    }
-
     #feedback-section .carousel-move .text-box h3{
         font-size: 20px;
     }
     
-    #feedback-section .carousel-move .text-box blockquote{
-        font-size: 12px;
-    }
-
-    #feedback-section .carousel-move .text-box div:last-of-type{
-        justify-content: start;
-    }
-
+    #feedback-section .carousel-move .text-box blockquote,
     #feedback-section .carousel-move .btn-box-shadow{
         font-size: 12px;
     }
@@ -1048,93 +1034,45 @@ header .carousel-item p{
 
 /* for all */
 
-#team-section.reveal-tag{
-    perspective: 2000px;
-}
-
-#home-section.reveal-tag .carousel-item > *,
-#menu-section.reveal-tag .card,
-#aboutus-section.reveal-tag .card,
-#team-section.reveal-tag .touch-slider-con,
-#feedback-section.reveal-tag .carousel,
-#gallery-section.reveal-tag .gallery-img,
-#contact-us-section.reveal-tag > *{
+.reveal-con .reveal-tag{
     opacity: 0;
     transition: all 1.5s ease-out;
 }
 
-#home-section.reveal-tag.scrolled-active .carousel-item > *,
-#menu-section.reveal-tag.scrolled-active .card,
-#aboutus-section.reveal-tag.scrolled-active .card,
-#team-section.reveal-tag.scrolled-active .touch-slider-con,
-#feedback-section.reveal-tag.scrolled-active .carousel,
-#gallery-section.reveal-tag.scrolled-active .gallery-img,
-#contact-us-section.reveal-tag.scrolled-active > *{
+.reveal-con.scrolled-active .reveal-tag{
     opacity: 1;
-}
-
-/* for home section */
-
-#home-section.reveal-tag .carousel-item h1{
-    transform: translateY(-100%);
-}
-
-#home-section.reveal-tag .carousel-item p{
-    transform: translateY(100%);
-}
-
-#home-section.reveal-tag.scrolled-active .carousel-item > *{
-    transform: translateY(0%);
+    transform: none !important;
 }
 
 /* for menu section */
-
-#menu-section.reveal-tag .card:nth-of-type(odd){
+#menu-section.reveal-con .reveal-tag:nth-child(odd){
     transform: translateX(-100%);
 }
 
-#menu-section.reveal-tag .card:nth-of-type(even){
+#menu-section.reveal-con .reveal-tag:nth-child(even){
     transform: translateX(100%);
 }
 
-#menu-section.reveal-tag.scrolled-active .card{
-    transform: translateX(0%);
-}
-
 /* for aboutus section */
-
-#aboutus-section.reveal-tag .card{
+#aboutus-section.reveal-con .reveal-tag{
     transform: scale(0);
 }
 
-#aboutus-section.reveal-tag.scrolled-active .card{
-    transform: scale(1);
-}
-
 /* for team section */
-
-#team-section.reveal-tag .touch-slider-con{
+#team-section.reveal-con .reveal-tag{
     transform: rotateY(90deg);
-}
-
-#team-section.reveal-tag.scrolled-active .touch-slider-con{
-    transform: rotateY(0deg);
+    perspective: 2000px;
 }
 
 /* for feedback section */
-
-#feedback-section.reveal-tag .carousel{
-    transform: translateY(10%);
-}
-
-#feedback-section.reveal-tag.scrolled-active .carousel{
-    transform: translateY(0%);
+#feedback-section.reveal-con .reveal-tag{
+    transform: translateY(30%);
 }
 
 /* for contactus section */
-
-#contact-us-section.reveal-tag > *{
-    transition-duration: 2.5s;
+#contact-us-section .reveal-con .reveal-tag{
+    transform: translateX(-100%);
+    transition-duration: 0.5s;
 }
 
 /* end scroll for reveal */

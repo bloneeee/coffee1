@@ -1,19 +1,4 @@
-// for loading
-
-window.onload = setInterval(loadingFun,1000);
-
-function loadingFun(){
-    const htmlTag = document.querySelector("html");
-
-    if(window.navigator.onLine){
-        htmlTag.classList.remove("loading");
-    }else{
-        // htmlTag.classList.add("loading");
-    }
-}
-
 // for scroll
-
 window.onscroll = () => {
     // for navbar
     const navbarTag = document.querySelector("nav");
@@ -38,28 +23,24 @@ window.onscroll = () => {
         };
     };
 
-    // for scroll for reveal
-    const revelTags = document.getElementsByClassName("reveal-tag")
-    for(let i = 0; i < revelTags.length; i++){
-        const revelTagTop = revelTags[i].getBoundingClientRect().top;
-        const revelTagH = revelTags[i].getBoundingClientRect().height;
+    // for scroll ani
+    const revealCons = document.getElementsByClassName("reveal-con")
+    for(let i = 0; i < revealCons.length; i++){
+        const revealConTop = revealCons[i].getBoundingClientRect().top;
+        const revealConH = revealCons[i].getBoundingClientRect().height;
 
         const windowH = window.innerHeight;
         const revealPoint = 80; // 150
 
-        if(revelTags[i].id === "aboutus-section" || revelTags[i].id === "gallery-section"){
-            const revealDelayTags = [...revelTags[i].getElementsByClassName("reveal-delay")];
+        if(revealCons[i].id === "aboutus-section" || revealCons[i].id === "gallery-section"){
+            const revealDelayTags = [...revealCons[i].getElementsByClassName("reveal-delay")];
             revealDelayTags.forEach((value,index) => {
                 value.style.setProperty("transition-delay", 0.25 * index + "s");
             });
         }
         
-        if(revelTagTop < (-revelTagH / 1.2)){
-            revelTags[i].classList.remove("scrolled-active");
-        }else if(revelTagTop < (windowH - revealPoint)){
-            revelTags[i].classList.add("scrolled-active");
-        }else{
-            revelTags[i].classList.remove("scrolled-active");
+        if(revealConTop < (windowH - revealPoint)){
+            revealCons[i].classList.add("scrolled-active");
         }
     };
 };
@@ -76,10 +57,26 @@ function projectProgressFun(){
         projectProgress.style.backgroundImage = `
             conic-gradient(
                 var(--c-g) ${currentPercent}%,
-                rgba(25,25,25,0.5) ${currentPercent}%
+                rgba(25, 25, 25, 0.5) ${currentPercent}%
             )`;
         projectProgress.querySelector(".text").innerText = currentPercent + "%";
     };
 };
+projectProgressFun();
 
-projectProgressFun()
+// for loading
+window.onload = loadingFun;
+function loadingFun(){
+    const htmlTag = document.querySelector("html");
+    const homeCar = document.querySelector("#home-carousel");
+
+    if(window.navigator.onLine){
+        // console.log("online");
+        htmlTag.classList.remove("loading");
+        homeCar.classList.add("intro-ani");
+    }else{
+        // console.log("offline");
+        htmlTag.classList.add("loading");
+        homeCar.classList.remove("intro-ani");
+    }
+}

@@ -74,18 +74,21 @@ function toAddLocalVal(key,value){
     jsMoscowObj[key] = value;
 
     let jsonMoscowObj = JSON.stringify(jsMoscowObj);
-    localStorage.setItem("jsonMoscowObj",jsonMoscowObj);
+    localStorage.setItem("jsonMoscowObj", jsonMoscowObj);
 }
 
 // start add menu obj to localStorage
 
 // start class toggle
 
-const classToggle = (activeTags,arr) => {
+const classToggle = (activeTags, arr) => {
     [...activeTags].forEach(value => {
         if(value) value.classList.remove("clicked-active");
     });
-    arr.forEach(value => value.classList.add("clicked-active"));
+    
+    arr.forEach(value => {
+        if(value) value.classList.add("clicked-active");
+    });
 };
 
 // end class toggle
@@ -98,7 +101,7 @@ const navbarTag = document.querySelector("nav"),
     navATags = document.querySelectorAll("nav .navbar-collapse a");
 
 if(navbarTag){
-    navbarToggler.addEventListener("click",()=>{
+    navbarToggler.addEventListener("click", () => {
         navbarToggler.classList.toggle("clicked1");
         navbarToggler.classList.toggle("clicked2");
         navbarCollapse.classList.toggle("collapse");
@@ -106,19 +109,15 @@ if(navbarTag){
 
     navATags.forEach(value => {
         if(value.classList.contains("dropdown-toggle")) return;
-        value.addEventListener("click",()=>{
-            [...navbarCollapse.querySelectorAll("a.clicked-active")].forEach(value => value.classList.remove("clicked-active"));
-            value.classList.add("clicked-active");
-        });
+        value.addEventListener("click", () => classToggle(navATags, [value]));
     });
 }
 
 // end navbar
 
-// start setInterval
+// Start Idx For Carousel 
 
-const toRunRide = (idx,dir,length,fun,mainTag)=>{
-    console.log(idx,dir,length,fun,mainTag);
+const toChCarIdx = (idx, dir, length) => {
     if(dir === 1){
         idx++;
         if(idx >= length - 1) dir = -1;
@@ -127,42 +126,56 @@ const toRunRide = (idx,dir,length,fun,mainTag)=>{
         if(idx <= 0) dir = 1;
     }
 
-    if(idx >= length) idx = length - 2;
+    if(idx >= length) idx = length - 2; 
     if(idx <= -1) idx = 1;
 
-    fun(idx,mainTag);
-    mainTag.setAttribute("data-ride-direction",dir);
+    return {carIdx: idx, carDir: dir};
+}
+
+// End Idx For Carousel
+
+// start setInterval
+
+const toRunRide = (mainTag, idx, dir, length, fun) => {
+    // console.log(idx, dir, length, fun, mainTag);
+
+    const {carIdx, carDir} = toChCarIdx(idx, dir, length);
+
+    mainTag.setAttribute("data-idx", carIdx);
+    mainTag.setAttribute("data-ride-direction", carDir);
+
+    fun(carIdx, mainTag);
 };
 
 // end setInterval
 
 // start clearInterval
 
-const toStopRide = (mainTag,fun,result,dur) => {
-    mainTag.addEventListener('mouseenter',()=>{
-        console.log(fun,result);
-        console.log('moveenter',dur);
+const toStopRide = (mainTag, fun, result, dur) => {
+    mainTag.addEventListener('mouseenter', () => {
+        // console.log(fun, result);
+        console.log('moveenter', dur);
         clearInterval(result);
     });
     
-    mainTag.addEventListener('mouseleave',()=>{
-        console.log(fun,result);
-        console.log('moveleave',dur);
+    mainTag.addEventListener('mouseleave', () => {
+        // console.log(fun, result);
+        console.log('moveleave', dur);
         clearInterval(result);
-        result = setInterval(fun,dur);
+        result = setInterval(fun, dur);
     });
 
-    mainTag.addEventListener('touchstart',()=>{
-        console.log(fun,result);
-        console.log('touchstart',dur);
+    mainTag.addEventListener('touchstart', () => {
+        // console.log(fun,result);
+        console.log('touchstart', dur);
         clearInterval(result);
     });
 
-    mainTag.addEventListener('touchend',()=>{
-        console.log(fun,result);
-        console.log('touchend',dur);
+    mainTag.addEventListener('touchend', () => {
+        // console.log(fun, result);
+        console.log('touchend', dur);
         clearInterval(result);
-        result = setInterval(fun,dur);
+        result = setInterval(fun, dur);
     });
 };
 
@@ -173,81 +186,90 @@ const toStopRide = (mainTag,fun,result,dur) => {
 const carousels = Array.from(document.getElementsByClassName("carousel"));
 
 let getCarID,
-    getCarDataIdx, getCarDataRide, getCarDataRideDur, getCarDataRideDir, getCarDataLoop,
-    carMove, carPrev, carNext, carIndicators, carLis, carToggles, carLength,
-    getCarDataPos, carItems;
-function toGetCarouselTags(carousel){
+    getCarDataIdx, getCarDataLoop, getCarDataRide, getCarDataRideDur, getCarDataRideDir,
+    carToggles, 
+    carMove, carItems, 
+    carIndicators, carLis, 
+    carPrev, carNext, 
+    carLength,
+    getCarDataPos;
+
+function toGetCarouselTags(carousel){ 
     getCarID = carousel.getAttribute("id");
 
     getCarDataIdx = Number(carousel.getAttribute("data-idx"));
-    getCarDataRide = +carousel.getAttribute("data-ride"),
-    getCarDataRideDur = +carousel.getAttribute("data-ride-duration"),
-    getCarDataRideDir = +carousel.getAttribute("data-ride-direction"),
     getCarDataLoop = +carousel.getAttribute("data-loop");
+    getCarDataRide = +carousel.getAttribute("data-ride");
+    getCarDataRideDur = +carousel.getAttribute("data-ride-duration");
+    getCarDataRideDir = +carousel.getAttribute("data-ride-direction");
 
-    carMove = document.getElementById(getCarID + "-move"),
-    carPrev = document.getElementById(getCarID + "-control-prev"),
-    carNext = document.getElementById(getCarID + "-control-next"),
-    carIndicators = document.getElementById(getCarID + "-indicators");
-    carLis = [...carIndicators.getElementsByTagName("li")],
     carToggles = [...document.getElementsByClassName(getCarID + "-toggle")];
-    carLength = carToggles[carToggles.length - 1].querySelectorAll(".carousel-toggle-tag").length;
 
-    getCarDataPos = carMove.getAttribute("data-position"),
-    carItems = carMove.querySelectorAll(".carousel-item");
+    carMove = document.getElementById(getCarID + "-move");
+    carItems =  [...carMove.getElementsByClassName("carousel-item")];
+
+    carIndicators = document.getElementById(getCarID + "-indicators");
+    carLis = [...carIndicators.getElementsByClassName("carousel-toggle-tag")];
+
+    carPrev = document.getElementById(getCarID + "-control-prev");
+    carNext = document.getElementById(getCarID + "-control-next");
+
+    carLength = carLis.length;
+    getCarDataPos = carMove.getAttribute("data-position");
 };
 
 carousels.forEach(carousel => {
     toGetCarouselTags(carousel);
-
+    
     // start to defined prev & next & indicators & items
     if(carPrev){
-        carPrev.addEventListener("click",()=>{
-            toMoveCarousel("prev",carousel);
+        carPrev.addEventListener("click", () => {
+            toMoveCarousel("prev", carousel);
         });
     };
 
     if(carNext){
-        carNext.addEventListener("click",()=>{
-            toMoveCarousel("next",carousel);
+        carNext.addEventListener("click", () => { 
+            toMoveCarousel("next", carousel);
         });    
     };
 
-    carLis.forEach((value,index) => {
-        value.addEventListener("click",()=>{
-            toMoveCarousel(index,carousel);
+    carLis.forEach((value, index) => {
+        value.addEventListener("click", () => {
+            toMoveCarousel(index, carousel);
         });
     });
 
     if(getCarDataPos === "top" || getCarDataPos === "bottom" || getCarDataPos === "left" || getCarDataPos === "right"){
-        carItems.forEach((value,index) => {
+        carItems.forEach((value, index) => {
             let distance;
+
             if(getCarDataPos === "top" || getCarDataPos === "bottom") distance = value.getBoundingClientRect().height;
             if(getCarDataPos === "left" || getCarDataPos === "right") distance = value.getBoundingClientRect().width;
             
-            value.style.setProperty(getCarDataPos, "-" + (distance * index) + "px");
-            value.setAttribute("data-distance",distance * index);
+            value.style.setProperty(getCarDataPos, (distance * index) + "px");
+            value.setAttribute("data-distance", distance * index);
         });
     }
     // end to defined prev & next & indicators & items
 
-    toMoveCarousel(getCarDataIdx,carousel);
+    toMoveCarousel(getCarDataIdx, carousel);
 
     // start to invoke ride
     let result;
-    const resultFun = ()=>{
+    const resultFun = () => {
         toGetCarouselTags(carousel);
-        toRunRide(getCarDataIdx,getCarDataRideDir,carLength,toMoveCarousel,carousel);
+        toRunRide(carousel, getCarDataIdx, getCarDataRideDir, carLength, toMoveCarousel);
     };
 
     if(getCarDataRide === 1) {
-        result = setInterval(resultFun,getCarDataRideDur);
-        toStopRide(carousel,resultFun,result,getCarDataRideDur);
+        result = setInterval(resultFun, getCarDataRideDur);
+        toStopRide(carousel, resultFun, result, getCarDataRideDur);
     }
     // end to invoke ride
 });
 
-function toMoveCarousel(btnSign,carousel){
+function toMoveCarousel(btnSign, carousel){
     toGetCarouselTags(carousel);
 
     // start to fix idx
@@ -258,35 +280,42 @@ function toMoveCarousel(btnSign,carousel){
     }else if(btnSign > -1){
         getCarDataIdx = btnSign
     }
+    // end to fix idx
 
+    // start to fix prev & next
     if(getCarDataLoop === 1){
-        if(getCarDataIdx >= carLength) getCarDataIdx = 0; // 1 >= 3
-        if(getCarDataIdx < 0) getCarDataIdx = carLength - 1; // 1 < 0
+        if(getCarDataIdx >= carLength){
+            getCarDataIdx = 0;
+        }else if(getCarDataIdx <= -1){
+            getCarDataIdx = carLength - 1;
+        }   
     }else{
         if(getCarDataIdx >= carLength - 1){
-            carNext.style.setProperty("visibility","hidden");
-            carPrev.style.setProperty("visibility","visible");
+            carNext.style.setProperty("visibility", "hidden");
+            carPrev.style.setProperty("visibility", "visible");
         }else if(getCarDataIdx <= 0){
-            carNext.style.setProperty("visibility","visible");
-            carPrev.style.setProperty("visibility","hidden");
+            carNext.style.setProperty("visibility", "visible");
+            carPrev.style.setProperty("visibility", "hidden");
         }else{
-            carNext.style.setProperty("visibility","visible");
-            carPrev.style.setProperty("visibility","visible");
+            carNext.style.setProperty("visibility", "visible");
+            carPrev.style.setProperty("visibility", "visible");
         }
     }
-    // end to fix idx
-    
+
+    // end to fix prev & next
+
     // start to move carousel-move
     if(getCarDataPos === "top" || getCarDataPos === "bottom" || getCarDataPos === "left" || getCarDataPos === "right"){
         let distance = carItems[getCarDataIdx].getAttribute("data-distance");
+
         if(getCarDataPos === "top"){
-            carMove.style.transform = `translateY(${distance}px)`;
-        }else if(getCarDataPos === "bottom"){
             carMove.style.transform = `translateY(-${distance}px)`;
+        }else if(getCarDataPos === "bottom"){
+            carMove.style.transform = `translateY(${distance}px)`;
         }else if(getCarDataPos === "left"){
-            carMove.style.transform = `translateX(${distance}px)`;
-        }else if(getCarDataPos === "right"){
             carMove.style.transform = `translateX(-${distance}px)`;
+        }else if(getCarDataPos === "right"){
+            carMove.style.transform = `translateX(${distance}px)`;
         }
     }
     // end to move carousel-move
@@ -300,15 +329,15 @@ function toMoveCarousel(btnSign,carousel){
     // end to move indicate-equip
    
     // start to invoke classToggle
-    let addArr = [], removeArr = [];
+    let removeArr = [], addArr = [];
     carToggles.forEach(value => {
-        addArr.push(value.querySelector(".carousel-toggle-tag.clicked-active"));
-        removeArr.push(value.getElementsByClassName("carousel-toggle-tag")[getCarDataIdx]);
+        removeArr.push(value.querySelector(".carousel-toggle-tag.clicked-active"));
+        addArr.push(value.getElementsByClassName("carousel-toggle-tag")[getCarDataIdx]);
     });
-    classToggle(addArr,removeArr);
-    // start to invoke classToggle
+    classToggle(removeArr, addArr);
+    // end to invoke classToggle
 
-    carousel.setAttribute("data-idx",getCarDataIdx);
+    carousel.setAttribute("data-idx", getCarDataIdx);
 };
 
 // end carousel
@@ -318,7 +347,7 @@ function toMoveCarousel(btnSign,carousel){
 const dropdownToggles = [...document.querySelectorAll(".dropdown-toggle")];
 
 dropdownToggles.forEach(value => {
-    value.addEventListener("click",(e)=>{
+    value.addEventListener("click", (e) => {
         e.preventDefault();
         value.classList.toggle("clicked-active-dropdown");
     });
@@ -462,7 +491,7 @@ if(leftSideBarBtn){
 // start quality control
 
 let qcInVal;
-function toChangeNormalQC(e,sign,input){
+function toChangeNormalQC(e, sign, input){
     const qcTag = document.getElementById(input);
     
     if(qcTag){
@@ -487,7 +516,6 @@ function toChangeNormalQC(e,sign,input){
 // start copyright year
 
 const copyrightYear = document.querySelector(".copyright-con .year");
-
 if(copyrightYear) copyrightYear.innerText = new Date().getUTCFullYear();
 
 // end copyright Year
