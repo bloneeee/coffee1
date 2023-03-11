@@ -29,8 +29,8 @@ window.onscroll = () => {
         const revealConTop = revealCons[i].getBoundingClientRect().top;
         const revealConH = revealCons[i].getBoundingClientRect().height;
 
-        const windowH = window.innerHeight;
-        const revealPoint = 80; // 150
+        const windowH = window.innerHeight / 1.5;
+        const revealPoint = 0; // 150
 
         if(revealCons[i].id === "aboutus-section" || revealCons[i].id === "gallery-section"){
             const revealDelayTags = [...revealCons[i].getElementsByClassName("reveal-delay")];

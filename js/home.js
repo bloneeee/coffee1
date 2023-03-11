@@ -1,62 +1,7 @@
-// start setInterval
-
-let teamIndex = 0;
-
-// for team touch slider
-let teamDirection = 1;
-const teamTouchSliderResultFun = ()=>{
-    if(teamDirection === 1){
-        teamIndex++;
-        if(teamIndex >= teamTouchSliderItems.length - 1) teamDirection = -1;
-    }else if(teamDirection === -1){
-        teamIndex--;
-        if(teamIndex <= 0) teamDirection = 1;
-    }
-
-    if(teamIndex >= teamTouchSliderItems.length) teamIndex = teamTouchSliderItems.length - 2;
-    if(teamIndex <= -1) teamIndex = 1;
-
-    teamTouchSliderMain(teamIndex);
-};
-let teamTouchSliderResult = setInterval(teamTouchSliderResultFun,3000);
-
-// end setInterval 
-
-// start clearInterval
-
-const teamTouchSliderCon = document.querySelector('#team-section .touch-slider-con');
-
-const stopFun = (value,result,fun,time) => {
-    value.addEventListener('mouseenter',()=>{
-        // console.log('moveenter',time);
-        clearInterval(result);
-    });
-    
-    value.addEventListener('mouseleave',()=>{
-        // console.log('moveleave',time);
-        clearInterval(result);
-        result = setInterval(fun,time);
-    });
-
-    value.addEventListener('touchstart',()=>{
-        // console.log('touchstart',time);
-        clearInterval(result);
-    });
-
-    value.addEventListener('touchend',()=>{
-        // console.log('touchend',time);
-        clearInterval(result);
-        result = setInterval(fun,time);
-    });
-};
-
-stopFun(teamTouchSliderCon,teamTouchSliderResult,teamTouchSliderResultFun,3000); // for team touch slider
-
-// end clearInterval
-
 // Start Team Section
 
-const teamTouchSliderInner = document.querySelector("#team-section .touch-slider-inner"),
+const teamTouchSliderCon = document.querySelector('#team-section .touch-slider-con'),
+    teamTouchSliderInner = document.querySelector("#team-section .touch-slider-inner"),
     teamTouchSliderItems = [...document.querySelectorAll("#team-section .touch-slider-item")],
     teamCarouselCards = document.querySelectorAll('#team-section .card');
 
@@ -67,7 +12,7 @@ let galleryCurrentIndex = 0,
     galleryPreviousTranslate = 0,
     galleryAniID = 0;
 
-teamTouchSliderItems.forEach((value,index)=>{
+teamTouchSliderItems.forEach((value, index)=>{
     value.addEventListener('dragstart', e => e.preventDefault());
     value.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -82,20 +27,18 @@ teamTouchSliderItems.forEach((value,index)=>{
 });
 
 function teamTouchSliderMain(index){
-    teamIndex = index;
-
-    galleryCurrentTranslate = index * -teamTouchSliderInner.getBoundingClientRect().width;
+    galleryCurrentTranslate = galleryCurrentIndex * -teamTouchSliderInner.getBoundingClientRect().width;
     galleryPreviousTranslate = galleryCurrentTranslate;
     gallerySetX();
 
     const activeTags = document.querySelectorAll('#team-section .touch-slider-con .clicked-active');
     const arr = [
-        teamTouchSliderItems[index],
-        teamCarouselCards[index]
+        teamTouchSliderItems[galleryCurrentIndex],
+        teamCarouselCards[galleryCurrentIndex]
     ];
-    classToggle(activeTags,arr);
+    classToggle(activeTags, arr);
 };
-teamTouchSliderMain(0);
+teamTouchSliderMain();
 
 function galleryTouchStart(index){
     return function(event){
@@ -111,6 +54,7 @@ function galleryTouchStart(index){
 
 function galleryTouchEnd(){
     galleryIsPressed = false;
+
     cancelAnimationFrame(galleryAni);
     teamTouchSliderInner.classList.remove('grabbing');
     
@@ -120,13 +64,13 @@ function galleryTouchEnd(){
     if(difference > 100 && galleryCurrentIndex > 0) galleryCurrentIndex--;
     // console.log(galleryCurrentIndex);
 
-    teamTouchSliderMain(galleryCurrentIndex);
+    teamTouchSliderMain();
 };
 
 function galleryTouchMove(event){
     if(galleryIsPressed){ // for mousemove
         let moveX = galleryCountX(event);
-        galleryCurrentTranslate = galleryPreviousTranslate + moveX - galleryStartX; 
+        galleryCurrentTranslate = galleryPreviousTranslate + moveX - galleryStartX;
     };
 };
 
@@ -139,9 +83,22 @@ function galleryAni(){
     if(galleryIsPressed) requestAnimationFrame(galleryAni);
 };
 
-function gallerySetX(index){
+function gallerySetX(){
     teamTouchSliderInner.style.transform = `translate(${galleryCurrentTranslate}px)`;
 };
+
+let teamDir = 1;
+const teamTouchSliderResultFun = () => {
+    const {carIdx, carDir} = toChCarIdx(galleryCurrentIndex, teamDir, teamTouchSliderItems.length);
+
+    galleryCurrentIndex = carIdx;
+    teamDir = carDir;
+
+    teamTouchSliderMain();
+}
+
+let teamTouchSliderResult = setInterval(teamTouchSliderResultFun, 3000);
+toStopRide(teamTouchSliderCon, teamTouchSliderResultFun, teamTouchSliderResult, 3000);
 
 // End Team Section
 

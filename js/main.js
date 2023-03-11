@@ -154,26 +154,26 @@ const toRunRide = (mainTag, idx, dir, length, fun) => {
 const toStopRide = (mainTag, fun, result, dur) => {
     mainTag.addEventListener('mouseenter', () => {
         // console.log(fun, result);
-        console.log('moveenter', dur);
+        // console.log('moveenter', dur);
         clearInterval(result);
     });
     
     mainTag.addEventListener('mouseleave', () => {
         // console.log(fun, result);
-        console.log('moveleave', dur);
+        // console.log('moveleave', dur);
         clearInterval(result);
         result = setInterval(fun, dur);
     });
 
     mainTag.addEventListener('touchstart', () => {
         // console.log(fun,result);
-        console.log('touchstart', dur);
+        // console.log('touchstart', dur);
         clearInterval(result);
     });
 
     mainTag.addEventListener('touchend', () => {
         // console.log(fun, result);
-        console.log('touchend', dur);
+        // console.log('touchend', dur);
         clearInterval(result);
         result = setInterval(fun, dur);
     });

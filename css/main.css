@@ -1045,12 +1045,12 @@ input[type="number"]{
 /* start progress */
 
 .progress-circle-liquid{
-    background-image: conic-gradient(
-        var(--c-g) 0%,
-        rgba(25,25,25,0.5) 0%
-    );
     width: 35px;
     height: 35px;
+    background-image: conic-gradient(
+        var(--c-g) 0%,
+        rgba(25, 25, 25, 0.5) 0%
+    );
     border-radius: 50%;
 
     position: fixed;
@@ -1060,9 +1060,12 @@ input[type="number"]{
 }
 
 .progress-circle-liquid .progress-circle{
-    background-color: rgb(25,25,25);
-    color: var(--c-g);
-    font-size: 12px;
+    font-family: var(--ff-cursive);
+    font-size: 10px;
+    font-weight: bold;
+
+    background-color: rgb(25, 25, 25);
+    color: var(--c-g); 
     border-radius: 50%;
 
     display: flex;
@@ -1310,6 +1313,7 @@ input[type="number"]{
 blockquote{
     color: #fff;
     font-weight: bold;
+
     letter-spacing: 1px;
     line-height: 2;
 }
