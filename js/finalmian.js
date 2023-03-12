@@ -32,13 +32,6 @@ window.onscroll = () => {
         const windowH = window.innerHeight / 1.5;
         const revealPoint = 0; // 150
 
-        if(revealCons[i].id === "aboutus-section" || revealCons[i].id === "gallery-section"){
-            const revealDelayTags = [...revealCons[i].getElementsByClassName("reveal-delay")];
-            revealDelayTags.forEach((value,index) => {
-                value.style.setProperty("transition-delay", 0.25 * index + "s");
-            });
-        }
-        
         if(revealConTop < (windowH - revealPoint)){
             revealCons[i].classList.add("scrolled-active");
         }

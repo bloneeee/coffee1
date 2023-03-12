@@ -18,7 +18,7 @@ const menuArr = [
 
 // start month arr
 
-const monthArr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // end month arr
 
@@ -513,9 +513,19 @@ function toChangeNormalQC(e, sign, input){
 
 // end quality control
 
+// start del tag 
+
+function delTagFun(event){
+    if(event.target.classList.contains("del-tag")){
+        event.target.remove();
+    } 
+}
+
+// end del tag
+
 // start copyright year
 
-const copyrightYear = document.querySelector(".copyright-con .year");
+const copyrightYear = document.querySelector(".cr-year");
 if(copyrightYear) copyrightYear.innerText = new Date().getUTCFullYear();
 
 // end copyright Year

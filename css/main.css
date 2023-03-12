@@ -184,12 +184,13 @@ input[type="number"]{
 
     background-color: #222;
     color: var(--c-g);
-    border-radius: 50%;
-    margin: 0 5px;
     
     font-size: 20px;
     text-align: center;
     line-height: 50px;
+
+    border-radius: 50%;
+    margin: 0 5px;
 
     box-shadow: 0 6px 0 #111;
     transform: translateY(-4px);
@@ -1269,8 +1270,9 @@ input[type="number"]{
 
 .img-hover-effect::before{
     content: '';
-    background-color: rgba(25,25,25,0.8);
+    background-color: rgba(25, 25, 25, 0.8);
     color: var(--c-g);
+
     font-size: 20px;
     font-weight: bold;
 
@@ -1336,6 +1338,10 @@ img{
     padding: 50px 0;
 }
 
+.py-80{
+    padding: 80px 0;
+}
+
 .border::before,
 .border::after{
     content: '';
@@ -1391,7 +1397,7 @@ img{
     padding-right: 20px;
 }
 
-#contact-us-section .row{
+#contact-us-section .row:first-of-type{
     padding-bottom: 2rem;
     border-bottom: 2px dashed #333;
     margin-bottom: 2rem;
@@ -1479,15 +1485,29 @@ img{
     display: none;
 }
 
-#contact-us-section .copyright-con{
+#contact-us-section .row:last-of-type{
     font-family: var(--ff-cursive);
     color: #fff;
     font-size: 18px;
     text-align: center;
 }
 
+#contact-us-section .row:last-of-type .owner{
+    margin-bottom: 10px;
+}
+
+#contact-us-section .row:last-of-type .owner a{
+    color: #888;
+    text-decoration: underline 2px wavy;
+    text-underline-offset: 2px;
+}
+
+#contact-us-section .row:last-of-type .owner a:hover{
+    color: var(--c-g);
+}
+
 @media (max-width: 992px){
-    #contact-us-section .row{
+    #contact-us-section .row:first-of-type{
         grid-template-columns: repeat(2, 1fr);
         text-align: center;
     }
@@ -1499,17 +1519,17 @@ img{
 }
 
 @media (max-width: 768px){
-    #contact-us-section .row{
+    #contact-us-section .row:first-of-type{
         grid-template-columns: 1fr;
         text-align: start;
     }
 
-    #contact-us-section .row > *{
+    #contact-us-section .row:first-of-type > *{
         padding-bottom: 2rem;
         border-bottom: 2px solid #333;
     }
 
-    #contact-us-section .row > *:last-of-type{
+    #contact-us-section .row:first-of-type > *:last-of-type{
         padding-bottom: 0;
         border-bottom: 0;
     }

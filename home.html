@@ -441,7 +441,7 @@
         <!-- End Pages Section -->
 
         <!-- Start Gallery Section -->
-        <section id="gallery-section" class="py-50 reveal-tag">
+        <section id="gallery-section" class="py-50">
             <h3 class="title">    
                 <span>Our Sweet Gallery</span>  
             </h3>
@@ -473,13 +473,15 @@
                     </li>
                 </ul>
                 
-                <div class="gallery-img-con"></div>
+                <div class="reveal-con">
+                    <div class="gallery-img-con"></div>
+                </div>  
             </div>
         </section>
         <!-- End Gallery Section -->
 
         <!-- Start Footer Section -->
-        <footer id="contact-us-section" class="py-50">
+        <footer id="contact-us-section" class="py-80">
             <div class="row">
                 <div class="col-1 reveal-con">
                     <div class="reveal-tag">
@@ -558,8 +560,9 @@
                 </div>
             </div>
 
-            <div class="copyright-con">
-                <p>&copy; All Rights Reserved - <span class="year"></span></p>
+            <div class="row">
+                <p class="owner">Code By <a href="https://github.com/yeyintmin17">Ye Yint Min</a></p>
+                <p class="copyright">&copy; All Rights Reserved - <span class="cr-year"></span></p>
             </div>
         </footer>
         <!-- End Footer Section -->
@@ -583,43 +586,6 @@
             <span class="spinner-border"></span>
         </div>
         <!-- End Loading Section -->
-
-        <!-- <div class="remove-gallery view-gallery-background" onclick="closeViewGalleryBackground(event)">
-            <div class="view-gallery-number">11 / 20</div>
-
-            <div class="view-gallery-con">
-                <div class="view-gallery-first-con">
-                    <img src="./assets/img/gallery11.jpg" alt="gallery11" class="view-gallery-main-img"/>
-                </div>
-    
-                <div class="view-gallery-second-con">
-                    <div class="view-gallery-imgs-con">
-                        <div class="view-gallery-imgs-move">
-                            <img src="./assets/img/gallery1.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery2.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery3.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery4.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery5.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery1.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery2.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery3.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery4.jpg" alt="gallery1" class="view-gallery-img"/>
-                            <img src="./assets/img/gallery5.jpg" alt="gallery1" class="view-gallery-img"/>
-                        </div>
-                    </div>
-    
-                    <div class="view-gallery-btn-con">
-                        <button class="btn" onclick="toChangeGalleryIndex(-1)">
-                            <i class="fas fa-angle-left"></i>
-                        </button>
-    
-                        <button class="btn" onclick="toChangeGalleryIndex(1)">
-                            <i class="fas fa-angle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <!-- own js 3 -->
         <script src="./js/main.js" type="text/javascript"></script>

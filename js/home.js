@@ -104,17 +104,18 @@ toStopRide(teamTouchSliderCon, teamTouchSliderResultFun, teamTouchSliderResult, 
 
 // Start Galley Section 
 
-const galleryImgCon = document.querySelector("#gallery-section .gallery-img-con"),
-    galleryNavItems = [...document.querySelectorAll("#gallery-section .gallery-nav-item")],
-    galleryNavBgColors = document.querySelectorAll("#gallery-section .gallery-nav-bg-color");
+const galleryNavItems = [...document.querySelectorAll("#gallery-section .gallery-nav-item")],
+    galleryNavBgColors = document.querySelectorAll("#gallery-section .gallery-nav-bg-color"),
+    galleryImgCon = document.querySelector("#gallery-section .gallery-img-con");
 
 let filterGalleryArr, currentGalleryIndex, 
-    newViewGalleryNumTag, newViewGalleryBackgroundTag, newViewGalleryImgTag, // to change tags
+    newViewGalleryNumTag, newViewGalleryImgTag, // to change tags
     getGalleryImg; // to select tag
 
+// for gallery navbar
 let galleryActiveIndex, galleryResult;
-function toToggleGalleryNavItem(index,xValue){
-    if(galleryActiveIndex === index){
+function toToggleGalleryNavItem(index, xValue){
+    if(galleryActiveIndex === index){ // 0 === 1
         galleryNavBgColors[galleryActiveIndex].style.transform = `translateX(0%)`;
     }else{
         galleryNavBgColors[galleryActiveIndex].style.transform = `translateX(${xValue}%)`;
@@ -122,7 +123,7 @@ function toToggleGalleryNavItem(index,xValue){
 
     const activeTags = document.querySelectorAll("#gallery-section .gallery-nav-item.clicked-active");
     const arr = [ galleryNavItems[galleryActiveIndex] ];
-    classToggle(activeTags,arr);
+    classToggle(activeTags, arr);
 }
 
 function toSelectGalleryNavItem(index){
@@ -134,32 +135,31 @@ function toSelectGalleryNavItem(index){
 
     if(galleryActiveIndex < index){
         galleryResult = setInterval(()=>{
-            toToggleGalleryNavItem(index,100);
+            toToggleGalleryNavItem(index, 100);
             galleryActiveIndex++;
-            if(galleryActiveIndex > index) clearInterval(galleryResult);
-        },100);
-    }else if(galleryActiveIndex > index){ 
+            if(galleryActiveIndex > index) clearInterval(galleryResult)
+        }, 100);
+    }else if(galleryActiveIndex > index){
         galleryResult = setInterval(()=>{
-            toToggleGalleryNavItem(index,-100);
+            toToggleGalleryNavItem(index, -100);
             galleryActiveIndex--;
             if(galleryActiveIndex < index) clearInterval(galleryResult);
-        },100);
+        }, 100);
     }else{
-        toToggleGalleryNavItem(index,100);
+        toToggleGalleryNavItem(index, 100);
     }
     
     const getDataFilter = galleryNavItems[index].getAttribute('data-filter');
     const getDataGrid = galleryNavItems[index].getAttribute('data-grid');
-    
     toAddGalleryImg(getDataFilter, getDataGrid);
 };
-
 toSelectGalleryNavItem(0);
 
 galleryNavItems.forEach((value, index) => {
     value.addEventListener('click', () => toSelectGalleryNavItem(index));
 });
 
+// for gallery
 function toAddGalleryImg(getDataFilter, getDataGrid){
     galleryImgCon.innerHTML = "";
     galleryImgCon.className = "gallery-img-con " + getDataGrid;
@@ -172,22 +172,25 @@ function toAddGalleryImg(getDataFilter, getDataGrid){
 
     for(let x = 0; x < filterGalleryArr.length; x++){
         const galleryImgTag = document.createElement("div");
-        galleryImgTag.className = "css-img img-hover-effect gallery-img reveal-delay";
+        
+        galleryImgTag.className = "css-img img-hover-effect gallery-img reveal-tag";
         galleryImgTag.setAttribute('onclick', `toViewGalleryImg(${x})`);
         galleryImgTag.style.cssText = `
             background-image: url('${filterGalleryArr[x].src}');
-            grid-area: gallery${x+1};
-        `;
+            grid-area: gallery${x+1};`;
+
+    
         galleryImgCon.appendChild(galleryImgTag);
     }
 }
 
+// for view gallery
 function toViewGalleryImg(index){
     currentGalleryIndex = index;
 
-    newViewGalleryBackgroundTag = document.createElement('div');
-    newViewGalleryBackgroundTag.className = 'remove-gallery view-gallery-background';
-    newViewGalleryBackgroundTag.setAttribute('onclick','closeViewGalleryBackground(event)');
+    const newViewGalleryBGTag = document.createElement('div');
+    newViewGalleryBGTag.className = 'view-gallery-background del-tag';
+    newViewGalleryBGTag.setAttribute('onclick','delTagFun(event)');
 
     newViewGalleryNumTag = document.createElement('div');
     newViewGalleryNumTag.className = 'view-gallery-number';
@@ -209,36 +212,30 @@ function toViewGalleryImg(index){
     newGalleryNextBtnTag.className = "btn btn2D btn2D-next";
     newGalleryNextBtnTag.setAttribute('onclick','toChangeGalleryIndex(1)');
 
-    newViewGalleryBtnConTag.append(newGalleryPrevBtnTag,newGalleryNextBtnTag);
-    newViewGalleryImgBtnConTag.append(newViewGalleryImgTag,newViewGalleryBtnConTag);
-    newViewGalleryBackgroundTag.append(newViewGalleryNumTag,newViewGalleryImgBtnConTag);
+    newViewGalleryBtnConTag.append(newGalleryPrevBtnTag, newGalleryNextBtnTag);
+    newViewGalleryImgBtnConTag.append(newViewGalleryImgTag, newViewGalleryBtnConTag);
+    newViewGalleryBGTag.append(newViewGalleryNumTag, newViewGalleryImgBtnConTag);
 
-    document.body.appendChild(newViewGalleryBackgroundTag);
+    document.body.appendChild(newViewGalleryBGTag);
 
     toChangeGalleryMain(index);
 };
-
-function closeViewGalleryBackground(event){
-    if(event.target === newViewGalleryBackgroundTag){
-        [...document.querySelectorAll('.remove-gallery')].forEach(value => value.remove());
-    }
-}
 
 function toChangeGalleryMain(index){
     getGalleryImg = document.querySelectorAll('.gallery-img');
 
     const getElementProperty = window.getComputedStyle(getGalleryImg[index]);
     const getElementValue = getElementProperty.getPropertyValue('background-image');
-    const splitValue = getElementValue.split("/img/");
-    const replaceValue = splitValue[1].replace('")','');
 
-    newViewGalleryImgTag.setAttribute('src',`./assets/img/${replaceValue}`);
+    const splitValue = getElementValue.split("/img/");
+    const replaceValue = splitValue[1].replace('")', '');
 
     newViewGalleryNumTag.innerText = index + 1;
+    newViewGalleryImgTag.setAttribute('src', `./assets/img/${replaceValue}`);
 }
 
-function toChangeGalleryIndex(direction){
-    if(direction == 1){
+function toChangeGalleryIndex(dir){
+    if(dir == 1){
         currentGalleryIndex = (currentGalleryIndex + 1) % getGalleryImg.length;
     }else{
         currentGalleryIndex = (currentGalleryIndex - 1 + getGalleryImg.length) % getGalleryImg.length;
