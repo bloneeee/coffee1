@@ -226,6 +226,9 @@ input[type="number"]{
 }
 
 .btn-rainbow{
+    font-family: var(--ff-cursive);
+    font-size: 20px;
+    
     background-image: conic-gradient(
         var(--c-coffee),
         var(--c-g),
@@ -234,12 +237,10 @@ input[type="number"]{
         var(--c-coffee)
     );
     color: transparent;
+    letter-spacing: 1px;
 
     padding: 10px 40px;
     border-radius: 10px;
-
-    font-size: 20px;
-    letter-spacing: 1px;
 
     position: relative;
 
@@ -263,8 +264,10 @@ input[type="number"]{
 .btn-rainbow::before{
     --rain-w: 4px;
     content: attr(data-text);
+
     background-color: rgb(25,25,25);
     color: #fff;
+
     border-radius: inherit;
 
     display: flex;
@@ -800,7 +803,7 @@ input[type="number"]{
     color: #fff;
 
     padding: 5px;
-    border: 2px solid #333;
+    border: 2px solid #444;
     outline: none;
 }
 
@@ -812,7 +815,7 @@ input[type="number"]{
 .qc-btn-con > span{
     height: 25px;
     padding: 0 5px;
-    border: 2px solid #333;
+    border: 2px solid #444;
     border-left: none;
     font-size: 13px;
     text-align: center;
@@ -842,12 +845,14 @@ input[type="number"]{
 /* start breadcrumb */
 
 .breadcrumb-con{
-    height: 15vh;
-    background-color: rgb(25,25,25);
-    color: #fff;
-    padding: 0 5rem;
-
+    font-family: var(--ff-cursive);
     font-size: 20px;
+
+    height: 15vh;
+    background-color: rgb(25, 25, 25);
+    color: #fff;
+    
+    padding: 0 5rem;
     user-select: none;
 
     display: flex;
@@ -904,7 +909,6 @@ input[type="number"]{
 /* start badge */
 
 .badge-btn{
-    font-family: var(--ff-read);
     padding: 0.5rem;
     cursor: pointer;
     position: relative;
@@ -912,7 +916,7 @@ input[type="number"]{
 
 .badge-btn .badge{
     padding: 5px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
     
     position: absolute;
@@ -940,7 +944,7 @@ input[type="number"]{
 
 .badge-card-section .badge-card-con{
     width: 30vw;
-    background-color: #222;
+    background-color: #111;
     color: #fff;
     position: relative;
 
@@ -979,7 +983,7 @@ input[type="number"]{
 }
 
 .badge-card-section .card{
-    background-color: rgb(25,25,25);
+    background-color: rgb(25, 25, 25);
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
@@ -997,18 +1001,13 @@ input[type="number"]{
 
 .badge-card-section .card-header{
     padding-bottom: 1rem;
-    border-bottom: 3px dashed #222;
+    border-bottom: 3px dashed #444;
     margin-bottom: 1rem;
     justify-content: space-between;
 }
 
-.badge-card-section  .price{
-    color: var(--c-y);
-    font-size: 15px;
-}
-
 .badge-card-section .card-header *{
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .badge-card-section .delete-btn{
@@ -1017,6 +1016,11 @@ input[type="number"]{
 
 .badge-card-section .delete-btn.disabled{
     opacity: 0.5;
+}
+
+.badge-card-section .price{
+    color: var(--c-y);
+    font-size: 15px;
 }
 
 @media (max-width: 992px){
@@ -1034,10 +1038,6 @@ input[type="number"]{
 @media (max-width: 768px){
     .badge-card-section .price{
         font-size: 13px;
-    }
-    
-    .badge-card-section .card-header *{
-        font-size: 18px;
     }
 }
 
@@ -1085,12 +1085,15 @@ input[type="number"]{
 /* start left side bar */
 
 #left-side-bar-section{
-    width: 250px;
+    --w: 250px;
+    font-family: var(--ff-cursive);
+    width: var(--w);
     height: 85vh;
+
     background-color: #222;
     color: #fff;
-    padding: 1rem;
 
+    padding: 1rem;
     overflow-y: auto;
 
     position: fixed;
@@ -1102,18 +1105,18 @@ input[type="number"]{
 }
 
 #left-side-bar-section.to-right{
-    left: -250px;
+    left: calc(var(--w) - var(--w) * 2);
 }
 
 #left-side-bar-section .left-side-bar-btn{
     background-color: #222;
     font-size: 20px;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 50% 50% 0;
 
     text-align: center;
 
     position: fixed;
-    left: 194px;
+    left: var(--w);
     top: 15vh;
     z-index: 100;
 
@@ -1149,6 +1152,7 @@ input[type="number"]{
 #left-side-bar-section .nav-item{
     background-color: #333;
     border-radius: 0.5rem;
+
     cursor: pointer;
     user-select: none;
 
@@ -1164,15 +1168,7 @@ input[type="number"]{
 
 @media(max-width: 576px){
     #left-side-bar-section{
-        width: 90%;
-    }
-
-    #left-side-bar-section.to-right{
-        left: -90%;
-    }
-
-    #left-side-bar-section .left-side-bar-btn{
-        left: calc(90% - 56px);
+        --w: calc(100vw - 40px);
     }
 }
 

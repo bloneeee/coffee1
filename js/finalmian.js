@@ -66,10 +66,10 @@ function loadingFun(){
     if(window.navigator.onLine){
         // console.log("online");
         htmlTag.classList.remove("loading");
-        homeCar.classList.add("intro-ani");
+        if(homeCar) homeCar.classList.add("intro-ani");
     }else{
         // console.log("offline");
         htmlTag.classList.add("loading");
-        homeCar.classList.remove("intro-ani");
+        if(homeCar) homeCar.classList.remove("intro-ani");
     }
 }

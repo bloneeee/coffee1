@@ -67,7 +67,7 @@ function toGetLocalVal(key){
 
 // start add menu obj to localStorage
 
-function toAddLocalVal(key,value){
+function toAddLocalVal(key, value){
     const getJSONMoscowObj = localStorage.getItem("jsonMoscowObj");
     const jsMoscowObj = JSON.parse(getJSONMoscowObj);
 
@@ -381,7 +381,6 @@ function toAddBadgeNum(){
         x++;
     };
 };
-
 toAddBadgeNum();
 
 const badgeCardSections = document.querySelectorAll(".badge-card-section");
@@ -496,6 +495,7 @@ function toChangeNormalQC(e, sign, input){
     
     if(qcTag){
         let qcVal = Number(qcTag.value);
+        
         if(sign === "plus"){
             qcVal++;
         }else if(sign === "minus"){
