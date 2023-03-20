@@ -86,7 +86,7 @@ const classToggle = (activeTags, arr) => {
         if(value) value.classList.remove("clicked-active");
     });
     
-    arr.forEach(value => {
+    [...arr].forEach(value => {
         if(value) value.classList.add("clicked-active");
     });
 };

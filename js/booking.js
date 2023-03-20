@@ -131,10 +131,10 @@ function toAddBookingCard(){
                 });
             }
         }else{
-            bookingCardCon.innerHTML = "<a href='./booking.html' class='add-item'>To Add Menu Item</a>";
+            bookingCardCon.innerHTML = "<a href='./booking.html' class='add-item'>To Make Booking</a>";
         };
     }else{
-        bookingCardCon.innerHTML = "<a href='./booking.html' class='add-item'>To Add Menu Item</a>";
+        bookingCardCon.innerHTML = "<a href='./booking.html' class='add-item'>To Make Booking</a>";
     };
 };
 

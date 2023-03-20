@@ -18,6 +18,7 @@ function filterMenu(getDataFilter){
 [...menuNavItems].forEach(value => {
     value.addEventListener("click",()=>{
         filterMenu(value.getAttribute("data-filter"));
+        classToggle(menuNavItems, [value]);
     });
 });
 menuNavItems[0].click();
@@ -92,6 +93,7 @@ function toAddBasketShoppingCard(){
     productShoppingCardCon.innerHTML = productShoppingFinalTotalCon.innerHTML = "";
 
     const jsMenuObj = toGetLocalVal("menu");
+    
     if(jsMenuObj){
         if(Object.keys(jsMenuObj).length > 0){
             for(let key in jsMenuObj){
@@ -143,10 +145,10 @@ function toAddBasketShoppingCard(){
                 <a href="#" class="btn btn-100 btn-rainbow order-btn" data-text="Order Now">Order Now</a>`;
         }else{
             productShoppingCardCon.innerHTML = "<a href='./menu.html' class='add-item'>To Add Menu Item</a>";
-        };
+        }
     }else{
         productShoppingCardCon.innerHTML = "<a href='./menu.html' class='add-item'>To Add Menu Item</a>";
-    };
+    }
 };
 
 function toDeleteBaskeShoppingCard(e){

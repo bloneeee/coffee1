@@ -13,6 +13,8 @@
 
     --m-c-g: #32a852;
     --c-coffee: #865e41;
+    --txt-secondary: gray;
+    
     --c-r: #f50a29;
     --c-g: #36f559;
     --c-y: #f7e243;
@@ -23,7 +25,7 @@
 html{
     overflow-y: auto;
     /* scrollbar-width: 8px 8px; */
-    scrollbar-color: #f7e243 #444;
+    scrollbar-color: var(--c-g) #444;
     scroll-behavior: smooth;
 }
 
@@ -39,10 +41,12 @@ body::-webkit-scrollbar{
 
 *::-webkit-scrollbar-track{
     background-color: #444;
+    border-radius: 4px;
 }
 
 *::-webkit-scrollbar-thumb{
-    background-color: var(--c-y);
+    background-color: #666;
+    border-radius: 4px;
 }
 
 /* start to remove default */
@@ -236,6 +240,7 @@ input[type="number"]{
         var(--c-y),
         var(--c-coffee)
     );
+
     color: transparent;
     letter-spacing: 1px;
 
@@ -640,11 +645,11 @@ input[type="number"]{
 .form-floating .form-control{
     width: 100%;
     background-color: transparent;
-    color: #fff;
+    color: #444;
     font-size: 13px;
 
     padding: 15px 5px;
-    border: 1px solid #fff;
+    border: 2px solid #444;
     outline: none;
 
     transition: border-color 0.25s linear;
@@ -1090,7 +1095,7 @@ input[type="number"]{
     width: var(--w);
     height: 85vh;
 
-    background-color: #222;
+    background-color: rgb(25, 25, 25);
     color: #fff;
 
     padding: 1rem;
@@ -1109,7 +1114,7 @@ input[type="number"]{
 }
 
 #left-side-bar-section .left-side-bar-btn{
-    background-color: #222;
+    background-color: rgb(25, 25, 25);
     font-size: 20px;
     border-radius: 0 50% 50% 0;
 
@@ -1143,6 +1148,9 @@ input[type="number"]{
 
 #left-side-bar-section .left-side-bar-title{
     text-align: center;
+    text-decoration: underline 2px wavy;
+    text-underline-offset: 2px;
+    margin-bottom: 1rem;
 }
 
 #left-side-bar-section .nav-item:last-child{
@@ -1150,7 +1158,9 @@ input[type="number"]{
 }
 
 #left-side-bar-section .nav-item{
-    background-color: #333;
+    background-color: #222;
+    color: var(--txt-secondary);
+
     border-radius: 0.5rem;
 
     cursor: pointer;
@@ -1161,9 +1171,19 @@ input[type="number"]{
     align-items: center;
 }
 
+#left-side-bar-section .nav-item.clicked-active{
+    background-color: var(--c-coffee);
+    color: #fff;
+}
+
 #left-side-bar-section .nav-item img{
     max-width: 25px;
     margin-left: 10px;
+    filter: grayscale(1);
+}
+
+#left-side-bar-section .nav-item.clicked-active img{
+    filter: grayscale(0);
 }
 
 @media(max-width: 576px){

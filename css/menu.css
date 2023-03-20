@@ -44,7 +44,7 @@ body{
 
 #menu-section .card .card-title{
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -100,11 +100,11 @@ body{
     }
 
     #menu-section .card .card-title{
-        font-size: 10px;
+        font-size: 13px;
     }
     
     #menu-section .card .card-price{
-       font-size: 13px;
+       font-size: 16px;
     }
 }
 

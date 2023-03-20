@@ -202,7 +202,7 @@ header .carousel-item p{
 }
 
 #menu-section .text-box h3{
-    color: #444;
+    color: var(--txt-secondary);
     font-size: 30px;
 }
 
@@ -307,7 +307,7 @@ header .carousel-item p{
 }
 
 #aboutus-section .card-title{
-    color: #444;
+    color: var(--txt-secondary);
     font-size: 25px;
     margin-right: 5px;
 }
@@ -389,8 +389,8 @@ header .carousel-item p{
 
 #team-section .touch-slider-item h3{
     font-family: var(--ff-cursive);
-    background-color: rgba(25,25,25,0.8);
-    color: var(--c-y);
+    background-color: rgba(25, 25, 25, 0.8);
+    color: var(--c-g);
     padding: 0 10px;
 
     writing-mode: vertical-lr;
@@ -437,22 +437,18 @@ header .carousel-item p{
 
 #team-section .card h3{
     font-size: 25px;
+    color: var(--txt-secondary);
 }
 
 #team-section .card .name{
-    color: #444;
     margin-bottom: 5px;
-}
-
-#team-section .card .position{
-    color: var(--c-y);
 }
 
 #team-section .card .num{
     width: 40px;
     height: 40px;
-    background-color: #444;
-    color: var(--c-y);
+    /* background-color: #444; */
+    color: var(--c-g);
 
     font-size: 15px;
     font-weight: bold;
@@ -461,8 +457,8 @@ header .carousel-item p{
     line-height: 40px;
 
     border-radius:  0 0 50% 50%;
-    box-shadow: -3px 3px 0 var(--c-y),
-                3px 3px 0 var(--c-y);
+    box-shadow: -3px 3px 0 var(--c-g),
+                3px 3px 0 var(--c-g);
 
     position: absolute;
     right: 3px;
@@ -629,10 +625,10 @@ header .carousel-item p{
 }
 
 #feedback-section .carousel-move .text-box h3{
-    color: #444;
+    color: var(--txt-secondary);
     font-size: 30px;
 
-    text-decoration: underline 2px wavy #444;
+    text-decoration: underline 2px wavy;
     text-underline-offset: 4px;
 }
 
