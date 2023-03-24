@@ -29,9 +29,10 @@ timeToAddOCTimetable();
 
 const bookingBadgeBtn = document.querySelector(".breadcrumb-con #booking-badge-btn");
 
-bookingBadgeBtn.addEventListener("click",()=> {
+bookingBadgeBtn.addEventListener("click", () => {
     const dataTarget = bookingBadgeBtn.getAttribute("data-target");
     document.querySelector("#" + dataTarget).style.display = "flex";
+
     toAutoDeleteBookingCard();
     toAddBookingCard();
 });
@@ -40,15 +41,16 @@ bookingBadgeBtn.addEventListener("click",()=> {
 
 // start add booking to localStorage
 
-const bkName = document.getElementById("bk-name");
+const bkForm = document.querySelector("#booking-form-section form"),
+    bkName = document.getElementById("bk-name");
     bkPho = document.getElementById("bk-pho"),
     bkDt = document.getElementById("bk-dt"),
     bkTable = document.getElementById("bk-table"),
     bkSubmit = document.getElementById("bk-submit");
 
-bkSubmit.addEventListener("click",(e)=>{
+bkForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
+    
     const bkNameVal = bkName.value,
         bkPhoVal = bkPho.value,
         bkDtVal = bkDt.value,
@@ -57,25 +59,36 @@ bkSubmit.addEventListener("click",(e)=>{
     if(bkNameVal && bkPhoVal && bkDtVal && bkTableVal){
         if(bkPhoVal.length >= 12){
             const bkDate = new Date(bkDtVal);
-            const today = new Date(); 
-            today.setHours(today.getHours() + 72); // for 3 days
+            // console.log(bkD);
+            console.log(new Date("1 May 2024 23:36:40"));
 
-            if(bkDate.getTime() > today.getTime()){
+            const minDay = new Date(); 
+            minDay.setHours(minDay.getHours() + 72); // for 3 days
+
+            const maxDay = new Date(); 
+            maxDay.setHours(maxDay.getHours() + 168); // for 7 days
+
+            const fullMinDay = `${minDay.getDate()}-${monthArr[minDay.getMonth()]}-${minDay.getUTCFullYear()} ${minDay.getHours()}:${minDay.getMinutes() + 1}`;
+
+            const fullMaxDay = `${maxDay.getDate()}-${monthArr[maxDay.getMonth()]}-${maxDay.getUTCFullYear()} ${maxDay.getHours()}:${maxDay.getMinutes()}`;
+
+            if(bkDate.getTime() >= minDay.getTime() && bkDate.getTime() <= maxDay.getTime()){
                 let jsBookingArr = toGetLocalVal("booking");
                 if(!jsBookingArr) jsBookingArr = [];
+
                 jsBookingArr.push({name: bkNameVal, pho: bkPhoVal, dt: bkDtVal, table: bkTableVal});
-                toAddLocalVal("booking",jsBookingArr);
+                toAddLocalVal("booking", jsBookingArr);
 
                 toAddBadgeNum();
                 toAddBookingCard();
             }else{
-                toMakeToastAlert(`To Booking At Least ${today.getDate()} - ${monthArr[today.getMonth()]} - ${today.getUTCFullYear()}`);
+                toMakeToastAlert(`To make booking from ${fullMinDay} to ${fullMaxDay}`);
             }
         }else{
-            toMakeToastAlert("Phone Number Must Have At Least 12")
+            toMakeToastAlert("Phone number must contain country code and sure number")
         }
     }else{
-        toMakeToastAlert("Fill Form Fully !!!");
+        toMakeToastAlert("Please fill the form fully !!!");
     }
 });
 
@@ -96,8 +109,15 @@ function toAddBookingCard(){
                 if(!value) continue; // for null (delete arr[idx])
 
                 const bookingDate = new Date(value.dt);
-                const fixedHour = bookingDate.getHours() < 10 ? "0" + bookingDate.getHours() : bookingDate.getHours();
-                const fixedMin = bookingDate.getMinutes() < 10 ? "0" + bookingDate.getMinutes() : bookingDate.getMinutes();
+
+                const fixedHour = bookingDate.getHours() < 10 
+                    ? "0" + bookingDate.getHours() 
+                    : bookingDate.getHours();
+
+                const fixedMin = bookingDate.getMinutes() < 10 
+                    ? "0" + bookingDate.getMinutes() 
+                    : bookingDate.getMinutes();
+                    
                 const fixedDate = `
                     ${bookingDate.getDate()} - 
                     ${monthArr[bookingDate.getMonth()]} - 
@@ -126,8 +146,9 @@ function toAddBookingCard(){
                 bkName.value = bkPho.value = bkDt.value  = "";
                 bkTable.value = "1";
 
-                document.querySelectorAll(".form-floating").forEach(value => {
-                    value.className = value.className.replace(" focused","");
+                document.querySelectorAll(".form-floating").forEach(tag => {
+                    if(tag.querySelector(".form-control").value) return;
+                    tag.className = tag.className.replace(" focused","");
                 });
             }
         }else{
@@ -138,14 +159,17 @@ function toAddBookingCard(){
     };
 };
 
-function toDeleteBookingCard(arr,idx){
-    arr.splice(idx,1);
-    toAddLocalVal("booking",arr);
+function toDeleteBookingCard(arr, idx){
+    arr.splice(idx, 1);
+
+    toAddLocalVal("booking", arr);
     toAddBadgeNum();
+    toAddBookingCard();
 }
 
 function toCheckDeleteBookingCard(e){
     const dataId = +e.currentTarget.getAttribute("data-id");
+
     const jsBookingArr = toGetLocalVal("booking");
     const bookingDate = new Date(jsBookingArr[dataId].dt);
 
@@ -155,8 +179,7 @@ function toCheckDeleteBookingCard(e){
     if(today.getTime() >= bookingDate.getTime()){
         toMakeToastAlert("Booking has already started. You can't cancel.");
     }else{
-        toDeleteBookingCard(jsBookingArr,dataId);
-        toAddBookingCard();
+        toDeleteBookingCard(jsBookingArr, dataId);
     }
 }
 
@@ -171,7 +194,7 @@ function toAutoDeleteBookingCard(){
             const today = new Date();
             if(today.getTime() >= bookingDate.getTime()) {
                 console.log("auto delete");
-                toDeleteBookingCard(jsBookingArr,i);
+                toDeleteBookingCard(jsBookingArr, i);
             }
         };
     };

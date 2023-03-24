@@ -53,27 +53,30 @@
                     </div>
 
                     <div class="col-3">
-                        <div class="form-group">
-                            <label for="bk-dt" class="form-label">Date</label>
-                            <input type="datetime-local" name="bk-dt" id="bk-dt" class="form-control"/>
+                        <div class="form-floating focused">
+                            <input type="text" name="bk-dt" id="bk-dt" class="form-control" onclick="toMakeCalTime(event)" autocomplete="off"/>
+                            <label for="bk-dt" class="form-label">
+                                <span>Date</span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="bk-table" class="form-label">Table</label>
-                            <div class="qc-control-con">
-                                <input type="number" name="bk-table" id="bk-table" class="qc normal-qc form-control" value="1" onfocusin="toChangeNormalQC(event,'in','bk-table')" onfocusout="toChangeNormalQC(event,'out','bk-table')">
-                    
-                                <div class="qc-btn-con">
-                                    <span class="plus-btn" onclick="toChangeNormalQC(event,'plus','bk-table')">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </span>
-                    
-                                    <span class="minus-btn" onclick="toChangeNormalQC(event,'minus','bk-table')">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </span>
-                                </div>
+                    <div class="col-4">  
+                        <div class="qc-control-con form-floating focused">
+                            <input type="number" name="bk-table" id="bk-table" class="qc normal-qc form-control" value="1" onfocusin="toChangeNormalQC(event,'in','bk-table')" onfocusout="toChangeNormalQC(event,'out','bk-table')">
+
+                            <label for="bk-table" class="form-label">
+                                <span>Table</span>
+                            </label>
+                
+                            <div class="qc-btn-con">
+                                <span class="plus-btn" onclick="toChangeNormalQC(event,'plus','bk-table')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </span>
+                
+                                <span class="minus-btn" onclick="toChangeNormalQC(event,'minus','bk-table')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -89,18 +92,18 @@
         <!-- End Booking Form Section -->
 
         <!-- Start Left Side Bar Section -->
-        <section id="left-side-bar-section">
+        <section id="left-side-bar-section" class="to-right">
             <div class="btn btn-normal left-side-bar-btn">
                 <i class="fa-solid fa-angle-left"></i>
             </div>
 
             <h3 class="left-side-bar-title">Timetable</h3>
 
-            <!-- Start Timetable Section -->
+            <!-- start timetable section -->
             <table class="oc-timetable">
                 <tbody></tbody>
             </table>
-            <!-- End Timetable Section -->
+            <!-- end timetable section -->
         </section>
         <!-- End Left Side Bar Section -->
 
@@ -117,17 +120,6 @@
             </div>
         </section>
         <!-- End Booking Card Section -->
-
-        <!-- Start Toast Alert -->
-        <div class="toast-alert-con">
-            <div class="toast-alert">
-                <span class="btn cancel-btn">
-                    <i class="fa-solid fa-xmark"></i>
-                </span>
-                <span class="text"></span>
-            </div>
-        </div>
-        <!-- End Toast Alert -->
 
         <!-- Start Loading Section -->
         <div id="loading-section">

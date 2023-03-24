@@ -18,13 +18,13 @@ body{
     grid-row-gap: 2rem;
 }
 
-#booking-form-section .form-control#bk-dt{
-    width: 100%;
+#booking-form-section .row .col-4 .form-floating{
+    height: 100%;
 }
 
 #booking-form-section .row .col-4 input.qc{
     width: 80%;
-    height: 40px;
+    height: 100%;
 }
 
 #booking-form-section .row .col-4 .qc-btn-con{
@@ -32,9 +32,8 @@ body{
 }
 
 #booking-form-section .row .col-4 .qc-btn-con > span{
-    height: 20px;
-    font-size: 10px;
-    line-height: 20px;
+    height: 50%;
+    border-color: var(--c-g);
 }
 
 #booking-form-section .row .col-5{
@@ -70,12 +69,13 @@ body{
 
 table.oc-timetable{
     font-family: var(--ff-read);
+    font-weight: bold;
     width: 100%;
 }
 
 table.oc-timetable tr{
     padding: 0.5rem 0;
-    border-bottom: 3px solid #333;
+    border-bottom: 2px solid #444;
 
     display: flex;
     justify-content: space-between;
@@ -86,16 +86,14 @@ table.oc-timetable tr:last-of-type{
     border: none;
 }
 
-table.oc-timetable .oc-time{
-    font-size: 20px;
-    color: var(--c-g);
+table.oc-timetable .day{
+    color: var(--txt-secondary);
 }
 
 table.oc-timetable .oc-time.closed{
     color: var(--c-r);
-    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
 }
 
 /* End Timetable Section */

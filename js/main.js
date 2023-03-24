@@ -16,6 +16,12 @@ const menuArr = [
 
 // end menu arr
 
+// start day arr 
+
+const dayArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+// end day arr
+
 // start month arr
 
 const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -399,39 +405,46 @@ badgeCardSections.forEach(value => {
 
 const formFloatingControls = Array.from(document.querySelectorAll(".form-floating .form-control"));
 
-formFloatingControls.forEach(value => {
-    value.addEventListener("focusin", ()=>{
-        const formFloating = value.parentElement;
+formFloatingControls.forEach(tag => {
+    tag.addEventListener("focusin", () => {
+        const startTmie = performance.now();
 
+        const formFloating = tag.parentElement;
         const formLabel = formFloating.querySelector(".form-label");
 
         if(formLabel.childElementCount === 1){
             const formLabelTextArr = Array.from(formLabel.innerText);
             formLabel.innerHTML = "";
-            
-            formLabelTextArr.forEach(value =>  formLabel.innerHTML += `<span>${value}</span>`);
+
+            for(let i = 0; i < formLabelTextArr.length; i++){
+                const newSpanTag = document.createElement("span");
+                newSpanTag.innerText = formLabelTextArr[i];
+                formLabel.appendChild(newSpanTag);
+            }
         }
            
         const spanTags = [...formLabel.children];
-        spanTags.forEach((value,index) => value.style.transitionDelay = (0.05 * index) + "s");
+        spanTags.forEach((value, index) => value.style.transitionDelay = (0.05 * index) + "s");
 
-        setTimeout(() => formFloating.classList.add("focused"), 1);
+        setTimeout(() => formFloating.classList.add("focused"), performance.now() - startTmie);
     });
 
-    value.addEventListener("focusout", ()=>{
-        if(value.value.length > 0) return;
+    tag.addEventListener("focusout", () => {
+        const startTmie = performance.now();
 
-        const formFloating = value.parentElement;
+        if(tag.value.length > 0) return;
+
+        const formFloating = tag.parentElement;
 
         const spanTags = [...formFloating.querySelectorAll(".form-label span")];
-        let finalTranDelay = +spanTags[spanTags.length - 1].style.transitionDelay.replace("s","")
+        let finalTranDelay = +spanTags[spanTags.length - 1].style.transitionDelay.replace("s", "");
         
-        spanTags.forEach(value => {
-            value.style.transitionDelay = finalTranDelay + "s";
+        spanTags.forEach(tag => {
+            tag.style.transitionDelay = finalTranDelay + "s";
             finalTranDelay -= 0.05;
         });
         
-        formFloating.classList.remove("focused");
+        setTimeout(() => formFloating.classList.remove("focused"), performance.now() - startTmie);
     });
 });
 
@@ -440,38 +453,45 @@ formFloatingControls.forEach(value => {
 // start toast alert
 
 function toMakeToastAlert(txt){
-    const toastAlertCon = document.querySelector(".toast-alert-con");
-    if(toastAlertCon){
-        toastAlertCon.style.display = "block";
-        toastAlertCon.addEventListener("click",(e)=>{
-            if(e.target === toastAlertCon) toCancelToastAlertCon(toastAlert,toastAlertH,toastAlertCon);
-        });
+    const newToastAlertCon = document.createElement("div");
+    newToastAlertCon.className = "toast-alert-con del-tag";
 
-        const toastAlert = toastAlertCon.querySelector(".toast-alert");
-        const toastAlertH = -toastAlert.offsetHeight;
-        
-        toMakeToastAlertAni(toastAlert,0,toastAlertH,0);
-        setTimeout(()=> toMakeToastAlertAni(toastAlert,2,0,0.15), 150);
+    newToastAlertCon.innerHTML = `
+        <div class="toast-alert">
+            <span class="btn cancel-btn">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
 
-        const toastAlertCancelBtn = toastAlert.querySelector(".cancel-btn");
-        toastAlertCancelBtn.addEventListener("click", () => {
-            toCancelToastAlertCon(toastAlert,toastAlertH,toastAlertCon);
-        });
+            <span class="text">${txt}</span>
+        </div>`;
 
-        toastAlertCon.querySelector(".text").innerText = txt;
-    };
-    
+    document.body.appendChild(newToastAlertCon);
+
+    const toastAlert = document.querySelector(".toast-alert-con .toast-alert");
+    const toastAlertH = -toastAlert.offsetHeight;
+
+    newToastAlertCon.addEventListener("click", (e) => {
+        if(e.target === newToastAlertCon) toCancelToastAlertCon(newToastAlertCon, toastAlert, toastAlertH, 0.15);
+    });
+
+    const toastAlertCancelBtn = toastAlert.querySelector(".cancel-btn");
+    toastAlertCancelBtn.addEventListener("click", () => {
+        toCancelToastAlertCon(newToastAlertCon, toastAlert, toastAlertH, 0.15);
+    });
+
+    toMakeToastAlertAni(toastAlert, 0, toastAlertH, 0);
+    setTimeout(()=> toMakeToastAlertAni(toastAlert, 2, 0, 0.15), 0);
 };
 
-function toMakeToastAlertAni(tag,topval,tranyval,trans){
+function toMakeToastAlertAni(tag, topval, tranyval, dur){
     tag.style.setProperty("top", topval + "%");
     tag.style.setProperty("transform", `translateY(${tranyval}px)`);
-    tag.style.setProperty("transition", `all ${trans}s ease-out`);
+    tag.style.setProperty("transition", `all ${dur}s ease-out`);
 }
 
-function toCancelToastAlertCon(tag,height,con){
-    toMakeToastAlertAni(tag,0,height,0.15);
-    setTimeout(()=> con.style.display = "none", 150);
+function toCancelToastAlertCon(con, tag, height, dur){
+    toMakeToastAlertAni(tag, 0, height, dur);
+    setTimeout(()=> con.remove(), dur * 1000);
 }
 
 // end toast alert
@@ -495,6 +515,7 @@ function toChangeNormalQC(e, sign, input){
     
     if(qcTag){
         let qcVal = Number(qcTag.value);
+        if(qcVal === 0) qcVal = 1;
         
         if(sign === "plus"){
             qcVal++;
@@ -506,6 +527,8 @@ function toChangeNormalQC(e, sign, input){
             if(qcVal < 1) qcVal = qcInVal;
         }
 
+        // console.log(qcInVal);
+
         qcTag.value = qcVal;
         return qcVal
     }
@@ -513,12 +536,210 @@ function toChangeNormalQC(e, sign, input){
 
 // end quality control
 
+// start calendar time
+
+async function toMakeCalTime(e){
+    const curTag = e.currentTarget;
+    const parTag = curTag.parentNode;
+    
+    if(parTag.classList.contains("cal-time-par")){
+        parTag.classList.remove("cal-time-par");
+        parTag.querySelector(".cal-time-con").remove();
+    }else{
+        parTag.classList.add("cal-time-par");
+
+        const newCalTimeCon = document.createElement("div");
+        newCalTimeCon.className = "cal-time-con";
+
+        const getCalCon = await toMakeCalendar();
+        const getTimeCon = await toMakeTime();
+
+        newCalTimeCon.append(getCalCon, getTimeCon);
+        parTag.appendChild(newCalTimeCon);
+
+        await toAddCalDays(new Date());
+        await toAddTime("hour", new Date(), 23);
+        await toAddTime("minute", new Date(), 59);
+        
+        // console.log("made cal & time");
+    }
+}
+
+// for calendar 
+function toMakeCalendar(){
+    return new Promise(resolve => {
+        const newCalCon = document.createElement("div");
+        newCalCon.className = "calendar-con";
+
+        const newCalLeftBtn = document.createElement("div");
+        newCalLeftBtn.className = "cal-btn cal-left-btn";
+        newCalLeftBtn.style.visibility = "hidden";
+        newCalLeftBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i>'; 
+        newCalLeftBtn.onclick = toChangeCal(-1);
+
+        const newCalRightBtn = document.createElement("div");
+        newCalRightBtn.className = "cal-btn cal-right-btn";
+        newCalRightBtn.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
+        newCalRightBtn.onclick = toChangeCal(+1);
+
+        const newTodayTag = document.createElement("div");
+        newTodayTag.className = "today";
+
+        const newDayCon = document.createElement("div");
+        newDayCon.className = "day-con";
+
+        newCalCon.append(newCalLeftBtn, newTodayTag, newCalRightBtn, newDayCon);
+        resolve(newCalCon);
+
+        // console.log("made calendar");
+    })
+}
+
+// for time
+function toMakeTime(){
+    return new Promise(async (resolve) => {
+        const newTimeCon = document.createElement("div");
+        newTimeCon.className = "time-con";
+
+        const newTimeHourCon = await toMakeTimeCon('hour');
+        const newTimeMinCon = await toMakeTimeCon('minute');
+
+        newTimeCon.append(newTimeHourCon, newTimeMinCon);
+        resolve(newTimeCon);
+
+        // console.log("made time");
+    });    
+}
+
+function toMakeTimeCon(txt){
+    return new Promise(resolve => {
+        const newTime = document.createElement("div");
+        newTime.className= `time-${txt}-con`
+
+        const newTimeTit = document.createElement("span");
+        newTimeTit.className = "time-title";
+        newTimeTit.innerText = txt.toUpperCase();
+
+        const newTimeCon = document.createElement("div");
+        newTimeCon.className = `num-con ${txt}-con`;
+
+        newTime.append(newTimeTit, newTimeCon);
+        resolve(newTime);
+
+        // console.log(`made time ${txt} tag`);
+    })
+    
+}
+
+// to add calendar days
+function toAddCalDays(date){
+    return new Promise(resolve => {
+        const getToday = document.querySelector(".calendar-con .today")
+        getToday.innerText = monthArr[date.getMonth()] + " " + date.getUTCFullYear();
+
+        const getDayCon = document.querySelector(".calendar-con .day-con");
+        getDayCon.innerHTML = "";
+
+        dayArr.forEach(val => {
+            const newDayName = document.createElement("span");
+            newDayName.className = "day no-aff";
+
+            newDayName.innerText = val.substring(0, 3);
+            getDayCon.appendChild(newDayName);
+        });
+
+        const lastMon = new Date(date.getUTCFullYear(), date.getMonth(), 0);
+        for(let i = 0; i <= lastMon.getDay(); i++){
+            const newDay = document.createElement("span");
+            newDay.className = "day no-aff";
+
+            getDayCon.appendChild(newDay);
+        }
+
+        const addMon = new Date(date.getUTCFullYear(), date.getMonth() + 1, 0);
+        for(let i = 0; i < addMon.getDate(); i++){
+            const newDate = document.createElement("span");
+
+            newDate.className = "day";
+            if(date.getMonth() === new Date().getMonth() && i + 1 === new Date().getDate()){
+                newDate.className += " today";
+            }
+
+            newDate.setAttribute("onclick", `toSelDateTime("date", ${i + 1})`);
+
+            newDate.innerText = i + 1;
+            getDayCon.appendChild(newDate);
+        }
+
+        resolve("completely added cal days");
+    });
+    
+}
+
+// to add time
+function toAddTime(txt, date, time){
+    return new Promise(resolve => {
+        const calCon = document.querySelector(".calendar-con");
+        const calConH = calCon.getBoundingClientRect().height;
+        document.querySelector(`.time-con`).style.height = calConH + "px";
+
+        const timeCon = document.querySelector(`.time-con .${txt}-con`);
+        timeCon.innerHTML = "";
+
+        for(i = 0; i <= time; i++){
+            const timeTag = document.createElement("span");
+
+            timeTag.className = txt;
+            if(date.getMonth() === new Date().getMonth()){
+                if(txt.toLowerCase() === "hour"){
+                    if(i === new Date().getHours()) timeTag.className += " today";
+                }else if(txt.toLowerCase() === "minute"){
+                    if(i === new Date().getMinutes()) timeTag.className += " today";
+                }
+            }
+
+            timeTag.setAttribute("onclick", `toSelDateTime('${txt}', ${i})`);
+
+            timeTag.innerText = i < 10 ? "0" + i : i;
+
+            timeCon.appendChild(timeTag);
+        }
+
+        resolve(`completely added ${txt}`);
+    })
+}
+
+// to change calendar
+function toChangeCal(sign){
+    return async function(){
+        let chMon = new Date();
+
+        if(sign === 1){
+            chMon.setMonth(new Date().getMonth() + 1);
+            document.querySelector(".cal-btn.cal-left-btn").style["visibility"] = "visible";
+        }else if(sign === -1){
+            document.querySelector(".cal-btn.cal-right-btn").style["visibility"] = "visible";
+        }
+
+        this.style["visibility"] = "hidden";
+
+        await toAddCalDays(chMon);
+        await toAddTime("hour", chMon, 23);
+        await toAddTime("minute", chMon, 59);
+    }
+}
+
+// select date time
+function toSelDateTime(txt, amount){
+    console.log(txt, amount);
+}
+
+// end calendar time
+
 // start del tag 
 
 function delTagFun(event){
-    if(event.target.classList.contains("del-tag")){
-        event.target.remove();
-    } 
+    if(event.target.classList.contains("del-tag")) event.target.remove();
 }
 
 // end del tag

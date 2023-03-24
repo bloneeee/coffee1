@@ -82,6 +82,7 @@ const basketShoppingBadgeBtn = document.querySelector(".breadcrumb-con #basket-s
 basketShoppingBadgeBtn.addEventListener("click", () => {
     const dataTarget = basketShoppingBadgeBtn.getAttribute("data-target");
     document.querySelector("#" + dataTarget).style.display = "flex";
+    
     toAddBasketShoppingCard();
 });
 

@@ -645,11 +645,11 @@ input[type="number"]{
 .form-floating .form-control{
     width: 100%;
     background-color: transparent;
-    color: #444;
+    color: #fff;
     font-size: 13px;
 
-    padding: 15px 5px;
-    border: 2px solid #444;
+    padding: 10px 5px;
+    border: 2px solid #666;
     outline: none;
 
     transition: border-color 0.25s linear;
@@ -659,9 +659,14 @@ input[type="number"]{
     border-color: var(--c-g);
 }
 
+.form-label{
+    font-family: var(--ff-cursive);
+}
+
 .form-floating .form-label{
     width: 100%;
     height: 100%;
+
     padding: 5px;
     font-size: 18px;
 
@@ -671,11 +676,13 @@ input[type="number"]{
     position: absolute;
     left: 0;
     top: 0;
+    
     pointer-events: none;
 }
 
 .form-floating .form-label > *{
     background-color: #000;
+    color: #666;
     transition: all 0.05s ease-out;
 }
 
@@ -689,8 +696,8 @@ input[type="number"]{
 
 .form-floating.focused .form-label > *{
     color: var(--c-g);
-    font-size: 11px;
-    transform: translateY(-180%);
+    font-size: 12px;
+    transform: translateY(-150%);
 }
 
 .form-group .form-label{
@@ -708,12 +715,12 @@ input[type="number"]{
 /* start toast alert */
 
 .toast-alert-con{
+    /* display: none; */
     font-family: var(--ff-read);
+
     width: 100vw;
     height: 100vh;
-    background-color: rgba(25,25,25,0.8);
-
-    display: none;
+    background-color: rgba(25, 25, 25, 0.8);
 
     position: fixed;
     left: 0;
@@ -722,8 +729,11 @@ input[type="number"]{
 }
 
 .toast-alert-con .toast-alert{
+    max-height: calc(100vh - 4%);
+
     background-color: var(--c-r);
     color: #fff;
+
     padding: 10px;
     border-radius: 5px;
 
@@ -735,21 +745,27 @@ input[type="number"]{
     right: 2%;
     top: 2%;
 
+    overflow-y: auto;
+
     transition: all 0.15s ease-out;
 }
 
 .toast-alert-con .cancel-btn{
-    font-size: 25px;
     background-color: #bf172d;
+    font-size: 20px;
+
     padding: 5px 10px;
     border-radius: 5px;
-    margin-right: 1rem;
+    margin-right: 10px;
+
+    position: sticky;
+    top: 10px;
 }
 
 .toast-alert-con .text{
     font-size: 18px;
-    letter-spacing: 1px;
-    line-height: 150%;
+    text-align: justify;
+    line-height: 200%;
 }
 
 /* end toast alert */
@@ -808,7 +824,7 @@ input[type="number"]{
     color: #fff;
 
     padding: 5px;
-    border: 2px solid #444;
+    border: 2px solid #666;
     outline: none;
 }
 
@@ -819,12 +835,16 @@ input[type="number"]{
 
 .qc-btn-con > span{
     height: 25px;
+    font-size: 10px;
+
     padding: 0 5px;
-    border: 2px solid #444;
+    border: 2px solid #666;
     border-left: none;
-    font-size: 13px;
-    text-align: center;
-    line-height: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     cursor: pointer;
 }
 
@@ -840,8 +860,6 @@ input[type="number"]{
     
     .qc-btn-con > span{
         height: 20px;
-        font-size: 10px;
-        line-height: 20px;
     }
 }
 
@@ -906,7 +924,6 @@ input[type="number"]{
     .breadcrumb .breadcrumb-item::after{
         margin: 0 0.5rem;
     }
-    
 }
 
 /* end breadcrumb */
@@ -1241,6 +1258,146 @@ input[type="number"]{
 }
 
 /* end go to top btn */
+
+/* start calendar & time */
+
+.cal-time-par{
+    user-select: none;
+    position: relative;
+}
+
+.cal-time-con{
+    width: 60vw;
+    color: (--txt-secondary);
+    font-weight: bold;
+
+    display: grid;
+    grid-template-columns: 70% 30%;
+    align-items: start;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: translateY(100%);
+    z-index: 1;
+
+    overflow: hidden;
+}
+
+.cal-time-con > *{
+    background-color: #222;
+    padding: 1rem;
+}
+
+/* calendar */
+
+.calendar-con{
+    border-radius: 0.5rem 0 0 0.5rem;
+
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    place-items: center;
+
+    grid-column-gap: 0.5%;
+    grid-row-gap: 2rem;
+}
+
+.calendar-con .cal-btn{
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.calendar-con .day-con{
+    grid-column: 1/4;
+    justify-self: stretch;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-con .day{
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* time */
+
+.time-con{
+    padding: 1rem 0;
+    border-left: 2px solid #333;
+    border-radius: 0 0.5rem 0.5rem 0;
+
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+}
+
+.time-con > *{
+    height: 100%;
+    overflow: hidden auto;
+}
+
+.time-con .time-title{
+    background-color: #222;
+    text-align: center;
+
+    display: block;
+    margin-bottom: 2rem;
+
+    position: sticky;
+    top: 0;
+}
+
+.time-con .num-con{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-con .num-con > *{
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.calendar-con .day:not(.no-aff),
+.time-con .num-con > *{
+    cursor: pointer;
+}
+
+.calendar-con .day:not(.no-aff).active,
+.time-con .num-con > *.active{
+    color: var(--c-g);
+}
+
+.calendar-con .day:not(.no-aff):hover,
+.time-con .num-con > *:hover{
+    background-color: rgb(25, 25, 25);
+}
+
+@media (max-width: 768px){
+    .cal-time-con{
+        width: 90vw;
+        font-size: 10px;
+    }
+
+    .calendar-con{
+        grid-row-gap: 1rem;
+    }
+
+    .calendar-con .day{
+        height: 30px;
+    }
+
+    .time-con .time-title{
+        margin-bottom: 1rem;
+    }
+}
+
+/* end calendar & time */
 
 /* end utilities */
 
