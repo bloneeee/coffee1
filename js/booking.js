@@ -13,9 +13,16 @@ function timeToAddOCTimetable(){
 
         const newOCTimeTag = document.createElement("td");
         newOCTimeTag.className = "oc-time"
-        newOCTimeTag.innerText = value.octime;
 
-        if(value.octime.toLowerCase() === "closed") newOCTimeTag.classList.add("closed");
+        if(value.open){
+            const fullOpenTime = `${toMakeLeading(value.open.hour, 2, "0")}:${toMakeLeading(value.open.min, 2, "0")}`;
+            const fullCloseTime = `${toMakeLeading(value.close.hour, 2, "0")}:${toMakeLeading(value.close.min, 2, "0")}`;
+
+            newOCTimeTag.innerText = `${fullOpenTime} ~ ${fullCloseTime}`;
+        }else{
+            newOCTimeTag.classList.add("closed");
+            newOCTimeTag.innerText = "closed";
+        }
 
         newTrTag.append(newDayTag, newOCTimeTag);
         ocTimetableBody.appendChild(newTrTag);
@@ -28,7 +35,6 @@ timeToAddOCTimetable();
 // start booking badge btn
 
 const bookingBadgeBtn = document.querySelector(".breadcrumb-con #booking-badge-btn");
-
 bookingBadgeBtn.addEventListener("click", () => {
     const dataTarget = bookingBadgeBtn.getAttribute("data-target");
     document.querySelector("#" + dataTarget).style.display = "flex";
@@ -59,33 +65,62 @@ bkForm.addEventListener("submit", (e) => {
     if(bkNameVal && bkPhoVal && bkDtVal && bkTableVal){
         if(bkPhoVal.length >= 12){
             const bkDate = new Date(bkDtVal);
-            // console.log(bkD);
-            console.log(new Date("1 May 2024 23:36:40"));
+            bkDate.setHours(0, 0, 0, 0);
+            // console.log("bkDate", bkDate, bkDate.getTime());
 
-            const minDay = new Date(); 
-            minDay.setHours(minDay.getHours() + 72); // for 3 days
+            const closeLists = ocTimetableArr.filter(val => !val.open);
+            const closeDays = closeLists.map(val => val.day.toLocaleLowerCase());
+            
+            const bkDay = dayArr[bkDate.getDay()].toLowerCase();
+            if(closeDays.indexOf(bkDay) > -1){
+                toMakeToastAlert(`${bkDay.toUpperCase()} is close.`);
+                return;
+            }
 
-            const maxDay = new Date(); 
-            maxDay.setHours(maxDay.getHours() + 168); // for 7 days
+            const minDate = new Date(); 
+            minDate.setDate(minDate.getDate() + 3); // for 3 days
+            minDate.setHours(0, 0, 0, 0);
+            // console.log("minDate", minDate, minDate.getTime());
+            
+            const maxDate = new Date(); 
+            maxDate.setDate(maxDate.getDate() + 7); // for 7 days
+            maxDate.setHours(0, 0, 0, 0);
+            // console.log("maxDate", maxDate,  maxDate.getTime());
 
-            const fullMinDay = `${minDay.getDate()}-${monthArr[minDay.getMonth()]}-${minDay.getUTCFullYear()} ${minDay.getHours()}:${minDay.getMinutes() + 1}`;
+            const fullminDate = `${minDate.getDate()} ${monthArr[minDate.getMonth()]} ${minDate.getUTCFullYear()}`;
 
-            const fullMaxDay = `${maxDay.getDate()}-${monthArr[maxDay.getMonth()]}-${maxDay.getUTCFullYear()} ${maxDay.getHours()}:${maxDay.getMinutes()}`;
+            const fullmaxDate = `${maxDate.getDate()} ${monthArr[maxDate.getMonth()]} ${maxDate.getUTCFullYear()}`;
 
-            if(bkDate.getTime() >= minDay.getTime() && bkDate.getTime() <= maxDay.getTime()){
-                let jsBookingArr = toGetLocalVal("booking");
-                if(!jsBookingArr) jsBookingArr = [];
+            if(bkDate.getTime() >= minDate.getTime() && bkDate.getTime() <= maxDate.getTime()){
+                const bkDate = new Date(bkDtVal);
+                const bkM = toMakeHToM(bkDate.getHours(), bkDate.getMinutes());
 
-                jsBookingArr.push({name: bkNameVal, pho: bkPhoVal, dt: bkDtVal, table: bkTableVal});
-                toAddLocalVal("booking", jsBookingArr);
+                const ttDay = ocTimetableArr[bkDate.getDay()];
 
-                toAddBadgeNum();
-                toAddBookingCard();
+                const openM = toMakeHToM(ttDay.open.hour, ttDay.open.min);
+                const closeM = toMakeHToM(ttDay.close.hour, ttDay.close.min);
+
+                const fullOpenTime = toMakeMToHM(openM, "txt");
+                const fullCloseTime = toMakeMToHM(closeM, "txt");
+                const leastCloseTime = toMakeMToHM(closeM - 30, "txt");
+
+                if(bkM >= openM && bkM <= closeM - 30){
+                    let jsBookingArr = toGetLocalVal("booking");
+                    if(!jsBookingArr) jsBookingArr = [];
+
+                    jsBookingArr.push({name: bkNameVal, pho: bkPhoVal, dt: bkDtVal, table: bkTableVal});
+                    toAddLocalVal("booking", jsBookingArr);
+
+                    toAddBadgeNum();
+                    toAddBookingCard();
+                }else{
+                    toMakeToastAlert(`According to the time table, ${ttDay.day} starts at ${fullOpenTime} and ends at ${fullCloseTime}. But to register at latest ${leastCloseTime}.`);
+                }       
             }else{
-                toMakeToastAlert(`To make booking from ${fullMinDay} to ${fullMaxDay}`);
+                toMakeToastAlert(`To make booking from ${fullminDate} to ${fullmaxDate}.`);
             }
         }else{
-            toMakeToastAlert("Phone number must contain country code and sure number")
+            toMakeToastAlert("Phone number must contain country code and make sure your number.")
         }
     }else{
         toMakeToastAlert("Please fill the form fully !!!");
@@ -108,23 +143,6 @@ function toAddBookingCard(){
                 const value = jsBookingArr[i];
                 if(!value) continue; // for null (delete arr[idx])
 
-                const bookingDate = new Date(value.dt);
-
-                const fixedHour = bookingDate.getHours() < 10 
-                    ? "0" + bookingDate.getHours() 
-                    : bookingDate.getHours();
-
-                const fixedMin = bookingDate.getMinutes() < 10 
-                    ? "0" + bookingDate.getMinutes() 
-                    : bookingDate.getMinutes();
-                    
-                const fixedDate = `
-                    ${bookingDate.getDate()} - 
-                    ${monthArr[bookingDate.getMonth()]} - 
-                    ${bookingDate.getUTCFullYear()} / 
-                    ${fixedHour} : 
-                    ${fixedMin}`;
-
                 bookingCardCon.innerHTML += `
                     <div class="card">
                         <div class="card-header">
@@ -138,7 +156,7 @@ function toAddBookingCard(){
                         <div class="card-body">
                             <span class="name">Name: ${value.name}</span>
                             <span class="pho">Pho: ${value.pho}</span>
-                            <span class="dt">Date: ${fixedDate}</span>
+                            <span class="dt">Date: ${value.dt}</span>
                             <span class="table">Table: ${value.table}</span>
                         </div>
                     </div>`;
@@ -147,8 +165,8 @@ function toAddBookingCard(){
                 bkTable.value = "1";
 
                 document.querySelectorAll(".form-floating").forEach(tag => {
-                    if(tag.querySelector(".form-control").value) return;
-                    tag.className = tag.className.replace(" focused","");
+                    if(tag.classList.contains("no-remove")) return;
+                    tag.className = tag.className.replace(" focused", "");
                 });
             }
         }else{
@@ -193,7 +211,7 @@ function toAutoDeleteBookingCard(){
             const bookingDate = new Date(value.dt);
             const today = new Date();
             if(today.getTime() >= bookingDate.getTime()) {
-                console.log("auto delete");
+                console.log("auto deleted");
                 toDeleteBookingCard(jsBookingArr, i);
             }
         };

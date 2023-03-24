@@ -1268,7 +1268,7 @@ input[type="number"]{
 
 .cal-time-con{
     width: 60vw;
-    color: (--txt-secondary);
+    color: var(--txt-secondary);
     font-weight: bold;
 
     display: grid;
@@ -1346,7 +1346,8 @@ input[type="number"]{
     text-align: center;
 
     display: block;
-    margin-bottom: 2rem;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
 
     position: sticky;
     top: 0;
@@ -1376,6 +1377,7 @@ input[type="number"]{
 .calendar-con .day:not(.no-aff):hover,
 .time-con .num-con > *:hover{
     background-color: rgb(25, 25, 25);
+    color: #fff;
 }
 
 @media (max-width: 768px){
@@ -1393,7 +1395,7 @@ input[type="number"]{
     }
 
     .time-con .time-title{
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 }
 

@@ -50,13 +50,14 @@ const galleryArr = [
 // start oc timetable arr
 
 const ocTimetableArr = [
-    {day: "Monday", octime: "8:00 ~ 16:00"},
-    {day: "Tuesday", octime: "8:00 ~ 16:00"},
-    {day: "Wednesday", octime: "8:00 ~ 16:00"},
-    {day: "Thursday", octime: "8:00 ~ 16:00"},
-    {day: "Friday", octime: "8:00 ~ 16:00"},
-    {day: "Saturday", octime: "9:00 ~ 15:00"},
-    {day: "Sunday", octime: "Closed"}
+    {day: "Sunday", open: null, close: null},
+    // {day: "Monday", open: {hour: 8, min: 0}, close: {hour: 16, min: 0}},
+    {day: "Monday", open: null, close: null},
+    {day: "Tuesday", open: {hour: 8, min: 0}, close: {hour: 16, min: 0}},
+    {day: "Wednesday", open: {hour: 8, min: 0}, close: {hour: 16, min: 0}},
+    {day: "Thursday", open: {hour: 8, min: 0}, close: {hour: 16, min: 0}},
+    {day: "Friday", open: {hour: 8, min: 0}, close: {hour: 16, min: 0}},
+    {day: "Saturday", open: {hour: 9, min: 0}, close: {hour: 15, min: 0}}
 ];
 
 // end oc timetable arr
@@ -98,6 +99,40 @@ const classToggle = (activeTags, arr) => {
 };
 
 // end class toggle
+
+// start to make leading
+
+function toMakeLeading(num, init, start){
+    return num.toString().padStart(init, start)
+}
+
+// end to make leading
+
+// start to make hour to minute
+
+function toMakeHToM(hour, min){
+    return (hour * 60 + min);
+}
+
+// end to make hour to minute
+
+// start to make minute to hour & minute
+
+function toMakeMToHM(totalMin, type){
+    const hour = Math.floor(totalMin / 60);
+    const min = totalMin % 60;
+    
+    if(type === "txt"){
+        const leadingH = toMakeLeading(hour, 2, "0");
+        const leadingM = toMakeLeading(min, 2, "0");
+
+        return (leadingH + ":" + leadingM);
+    }else if(type === "obj"){
+        return {hour, min};
+    }
+}
+
+// end to make minute to hour & minute
 
 // start navbar 
 
@@ -406,6 +441,8 @@ badgeCardSections.forEach(value => {
 const formFloatingControls = Array.from(document.querySelectorAll(".form-floating .form-control"));
 
 formFloatingControls.forEach(tag => {
+    if(tag.id === "bk-dt" || tag.id === "bk-table") return;
+
     tag.addEventListener("focusin", () => {
         const startTmie = performance.now();
 
@@ -453,6 +490,8 @@ formFloatingControls.forEach(tag => {
 // start toast alert
 
 function toMakeToastAlert(txt){
+    // console.trace();
+
     const newToastAlertCon = document.createElement("div");
     newToastAlertCon.className = "toast-alert-con del-tag";
 
@@ -561,7 +600,7 @@ async function toMakeCalTime(e){
         await toAddTime("hour", new Date(), 23);
         await toAddTime("minute", new Date(), 59);
         
-        // console.log("made cal & time");
+        // console.log("compeletely made cal & time");
     }
 }
 
@@ -591,7 +630,7 @@ function toMakeCalendar(){
         newCalCon.append(newCalLeftBtn, newTodayTag, newCalRightBtn, newDayCon);
         resolve(newCalCon);
 
-        // console.log("made calendar");
+        // console.log("compeletely made calendar");
     })
 }
 
@@ -607,7 +646,7 @@ function toMakeTime(){
         newTimeCon.append(newTimeHourCon, newTimeMinCon);
         resolve(newTimeCon);
 
-        // console.log("made time");
+        // console.log("compeletely made time");
     });    
 }
 
@@ -626,7 +665,7 @@ function toMakeTimeCon(txt){
         newTime.append(newTimeTit, newTimeCon);
         resolve(newTime);
 
-        // console.log(`made time ${txt} tag`);
+        // console.log(`compeletely made time ${txt} con`);
     })
     
 }
@@ -662,7 +701,7 @@ function toAddCalDays(date){
 
             newDate.className = "day";
             if(date.getMonth() === new Date().getMonth() && i + 1 === new Date().getDate()){
-                newDate.className += " today";
+                newDate.className += " active";
             }
 
             newDate.setAttribute("onclick", `toSelDateTime("date", ${i + 1})`);
@@ -692,16 +731,14 @@ function toAddTime(txt, date, time){
             timeTag.className = txt;
             if(date.getMonth() === new Date().getMonth()){
                 if(txt.toLowerCase() === "hour"){
-                    if(i === new Date().getHours()) timeTag.className += " today";
+                    if(i === new Date().getHours()) timeTag.className += " active";
                 }else if(txt.toLowerCase() === "minute"){
-                    if(i === new Date().getMinutes()) timeTag.className += " today";
+                    if(i === new Date().getMinutes()) timeTag.className += " active";
                 }
             }
 
             timeTag.setAttribute("onclick", `toSelDateTime('${txt}', ${i})`);
-
             timeTag.innerText = i < 10 ? "0" + i : i;
-
             timeCon.appendChild(timeTag);
         }
 
@@ -730,8 +767,25 @@ function toChangeCal(sign){
 }
 
 // select date time
+const today = new Date();
+let bkDate = `${monthArr[today.getMonth()]} ${today.getDate()} ${today.getUTCFullYear()}` ,
+    bkHour = 0, bkMin = 0;
+    
 function toSelDateTime(txt, amount){
-    console.log(txt, amount);
+    const calTimePar = document.querySelector(".cal-time-par");
+
+    const today = calTimePar.querySelector(".today");
+    const formControl = calTimePar.querySelector(".form-control");
+    
+    if(txt === "date"){
+       bkDate = `${amount} ${today.innerText}` 
+    }else if(txt === "hour"){
+        bkHour = amount;
+    }else if(txt === "minute"){
+        bkMin = amount;
+    }
+
+    formControl.value = `${bkDate} / ${toMakeLeading(bkHour, 2, "0")}:${toMakeLeading(bkMin, 2, "0")}`;
 }
 
 // end calendar time
