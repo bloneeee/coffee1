@@ -25,7 +25,7 @@
 html{
     overflow-y: auto;
     /* scrollbar-width: 8px 8px; */
-    scrollbar-color: var(--c-g) #444;
+    scrollbar-color: #666 #444;
     scroll-behavior: smooth;
 }
 
